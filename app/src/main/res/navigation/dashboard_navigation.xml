@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_sports">
+
+
+    <fragment
+        android:id="@+id/nav_events"
+        android:name="com.pt.mysociety.dashboard.events.EventsFragment"
+        android:label="@string/nav_events"
+        tools:layout="@layout/fragment_page">
+
+        <action
+            android:id="@+id/action_nav_events_to_event_details"
+            app:destination="@id/nav_event_details">
+            <argument
+                android:name="event" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_event_details"
+        android:name="com.pt.mysociety.dashboard.events.EventDetailsFragment"
+        android:label="@string/nav_event_details"
+        tools:layout="@layout/fragment_event_details" />
+
+    <fragment
+        android:id="@+id/nav_sports"
+        android:name="com.pt.mysociety.dashboard.sports.SportsFragment"
+        android:label="@string/nav_sports"
+        tools:layout="@layout/fragment_page">
+
+        <action
+            android:id="@+id/action_nav_sports_to_sport_details"
+            app:destination="@id/nav_sport_details">
+            <argument
+                android:name="sportId" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_sport_details"
+        android:name="com.pt.mysociety.dashboard.sports.SportDetailsFragment"
+        android:label="@string/nav_sport_details"
+        tools:layout="@layout/fragment_sport_details">
+
+        <action
+            android:id="@+id/action_nav_sport_details_to_sport_expenses"
+            app:destination="@id/nav_sport_expenses">
+            <argument
+                android:name="sportId" />
+        </action>
+
+        <action
+            android:id="@+id/action_nav_sport_details_to_sport_funds"
+            app:destination="@id/nav_sport_funds">
+            <argument
+                android:name="sportId" />
+        </action>
+
+        <action
+            android:id="@+id/action_nav_sport_details_to_sport_equipments"
+            app:destination="@id/nav_sport_equipments">
+            <argument
+                android:name="sportId" />
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_sport_expenses"
+        android:name="com.pt.mysociety.dashboard.sports.expense.SportExpensesFragment"
+        android:label="@string/nav_sport_expenses"
+        tools:layout="@layout/fragment_page">
+
+        <action
+            android:id="@+id/action_nav_sport_expenses_to_sport_expense_details"
+            app:destination="@id/nav_sport_expense_details">
+            <argument
+                android:name="sportId" />
+            <argument
+                android:name="expenseId" />
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_sport_expense_details"
+        android:name="com.pt.mysociety.dashboard.sports.expense.SportExpenseDetailsFragment"
+        android:label="@string/nav_sport_expense_details"
+        tools:layout="@layout/fragment_sport_expense_details" />
+
+    <fragment
+        android:id="@+id/nav_sport_funds"
+        android:name="com.pt.mysociety.dashboard.sports.fund.SportFundsFragment"
+        android:label="@string/nav_sport_funds"
+        tools:layout="@layout/fragment_page">
+
+        <action
+            android:id="@+id/action_nav_sport_funds_to_sport_fund_details"
+            app:destination="@id/nav_sport_fund_details">
+            <argument
+                android:name="sportId" />
+            <argument
+                android:name="fundId" />
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_sport_fund_details"
+        android:name="com.pt.mysociety.dashboard.sports.fund.SportFundDetailsFragment"
+        android:label="@string/nav_sport_fund_details"
+        tools:layout="@layout/fragment_sport_fund_details" />
+
+    <fragment
+        android:id="@+id/nav_sport_equipments"
+        android:name="com.pt.mysociety.dashboard.sports.equipment.SportEquipmentsFragment"
+        android:label="@string/nav_sport_equipments"
+        tools:layout="@layout/fragment_sport_equipments">
+
+        <action
+            android:id="@+id/action_nav_sport_equipments_to_sport_equipment_details"
+            app:destination="@id/nav_sport_equipment_details">
+            <argument
+                android:name="sportId" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_sport_equipment_details"
+        android:name="com.pt.mysociety.dashboard.sports.equipment.SportEquipmentDetailsFragment"
+        android:label="@string/nav_sport_equipment_details"
+        tools:layout="@layout/fragment_sport_equipment_details" />
+</navigation>

@@ -1,0 +1,83 @@
+<resources>
+    <string name="app_name">My Society</string>
+    <string name="data_not_found">Data not found</string>
+
+    <!-- Strings related to action bar menu -->
+    <string name="action_logout">Logout</string>
+    <string name="action_save">Save</string>
+    <string name="action_create">Create</string>
+    <string name="action_add">Add</string>
+    <string name="action_update">Update</string>
+
+    <!-- Strings related to drawer header -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Welcome to MySociety</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
+
+    <!-- Strings related to dashboard -->
+    <string name="title_activity_dashboard">Dashboard</string>
+
+
+    <!-- Strings related to event -->
+    <string name="nav_events">Events</string>
+    <string name="nav_event_details">Event Details</string>
+    <string name="prompt_event_name">Name</string>
+
+
+    <!-- Strings related to sport -->
+    <string name="nav_sports">Sports</string>
+    <string name="nav_sport_details">Sport Details</string>
+    <string name="nav_sport_expenses">Expenses</string>
+    <string name="nav_sport_expense_details">Expense Details</string>
+    <string name="nav_sport_funds">Funds</string>
+    <string name="nav_sport_fund_details">Fund Details</string>
+    <string name="nav_sport_equipments">Equipments</string>
+    <string name="nav_sport_equipment_details">Equipment Details</string>
+    <string name="prompt_sport_name">Name</string>
+    <string name="prompt_sport_tag">Tag</string>
+    <string name="info_total_funds">Total Funds: %s</string>
+    <string name="info_total_expenses">Total Expenses: %s</string>
+    <string name="info_balance">Balance: %s</string>
+    <string name="info_bats">Bats: %d</string>
+    <string name="info_balls">Balls: %d</string>
+    <string name="info_equipments">Equipments:</string>
+    <string name="action_update_funds">Funds</string>
+    <string name="action_update_expenses">Expenses</string>
+    <string name="action_update_equipments">Equipments</string>
+    <string name="prompt_expense_category">Category</string>
+    <string name="prompt_expense_desc">Description</string>
+    <string name="prompt_expense_price">Price</string>
+    <string name="prompt_expense_quantity">Quantity</string>
+    <string name="prompt_expense_buyer">Buyer</string>
+    <string name="prompt_expense_added_on">Added On</string>
+    <string name="item_price">Price: %s</string>
+    <string name="item_contribution">Contribution: %s</string>
+    <string name="prompt_fund_from">From</string>
+    <string name="prompt_fund_amount">Amount</string>
+    <string name="prompt_fund_contributed_on">Contributed On</string>
+    <string name="item_quantity">Quantity: %d</string>
+    <string name="prompt_equipment_category">Category</string>
+    <string name="prompt_equipment_description">Description</string>
+    <string name="prompt_equipment_quantity">Quantity</string>
+    <string name="prompt_equipment_status">Status</string>
+    <string name="prompt_equipment_updated_on">Updated On</string>
+
+    <!-- Strings related to profile -->
+    <string name="title_activity_profile">Profile</string>
+    <string name="prompt_profile_name">Name</string>
+    <string name="prompt_profile_wing">Wing</string>
+    <string name="prompt_profile_floor">Floor</string>
+    <string name="prompt_profile_house">House</string>
+
+
+</resources>
