@@ -19,6 +19,16 @@ class SharedPreference constructor(val context: Context) {
         edit.apply()
     }
 
+    private fun getLongValue (key: String): Long {
+        return getInstance().getLong(key, 0)
+    }
+
+    private fun setLongValue (key: String, value: Long?) {
+        val edit = getInstance().edit()
+        edit.putLong(key, value ?: 0)
+        edit.apply()
+    }
+
     private fun getIntValue (key: String): Int {
         return getInstance().getInt(key, -1)
     }
@@ -83,5 +93,13 @@ class SharedPreference constructor(val context: Context) {
 
     fun setRole (value: String?) {
         setStringValue("KEY_ROLE", value)
+    }
+
+    fun getLastLoginTime (): Long {
+        return getLongValue("KEY_LAST_LOGIN_TIME")
+    }
+
+    fun setLastLoginTime (value: Long?) {
+        setLongValue("KEY_LAST_LOGIN_TIME", value)
     }
 }

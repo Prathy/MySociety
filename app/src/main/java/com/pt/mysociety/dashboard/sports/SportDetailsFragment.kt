@@ -14,6 +14,7 @@ import com.pt.mysociety.SharedPreference
 import com.pt.mysociety.dashboard.DashboardActivity
 import com.pt.mysociety.data.CurrencyHelper
 import com.pt.mysociety.data.DateHelper
+import com.pt.mysociety.data.UserHelper
 import com.pt.mysociety.databinding.FragmentSportDetailsBinding
 
 class SportDetailsFragment : Fragment() {
@@ -36,7 +37,7 @@ class SportDetailsFragment : Fragment() {
         val etTag: EditText = binding.tag
         val btCreateSport = binding.createSport
         val llActions = binding.actions
-        val btnInventories = binding.inventories
+        val btnExpenses = binding.expenses
         val btnFunds = binding.funds
         val btnEquipments = binding.equipments
         val tvTotalFunds = binding.totalFunds
@@ -54,6 +55,8 @@ class SportDetailsFragment : Fragment() {
             btCreateSport.text = getString(R.string.action_create)
             llActions.visibility = View.INVISIBLE
         }
+        etTag.isEnabled = UserHelper.isAdmin(requireContext())
+        btCreateSport.visibility = if(UserHelper.isAdmin(requireContext())) View.VISIBLE else View.INVISIBLE
 
         btCreateSport.setOnClickListener {
             sport = sportsViewModel.sport.value ?: Sport()
@@ -70,22 +73,22 @@ class SportDetailsFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        btnInventories.setOnClickListener {
-            findNavController().navigate(R.id.action_nav_sport_details_to_sport_expenses, bundleOf(
+        btnExpenses.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_sport_details_to_expenses, bundleOf(
                 Pair("sportId", sportId)
             )
             )
         }
 
         btnFunds.setOnClickListener {
-            findNavController().navigate(R.id.action_nav_sport_details_to_sport_funds, bundleOf(
+            findNavController().navigate(R.id.action_nav_sport_details_to_funds, bundleOf(
                 Pair("sportId", sportId)
             )
             )
         }
 
         btnEquipments.setOnClickListener {
-            findNavController().navigate(R.id.action_nav_sport_details_to_sport_equipments, bundleOf(
+            findNavController().navigate(R.id.action_nav_sport_details_to_equipments, bundleOf(
                 Pair("sportId", sportId)
             )
             )

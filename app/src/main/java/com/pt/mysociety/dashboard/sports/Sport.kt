@@ -1,6 +1,8 @@
 package com.pt.mysociety.dashboard.sports
 
 import com.google.firebase.database.IgnoreExtraProperties
+import com.pt.mysociety.dashboard.expense.Expense
+import com.pt.mysociety.dashboard.fund.Fund
 
 @IgnoreExtraProperties
 data class Sport(
@@ -11,24 +13,9 @@ data class Sport(
     var expenses: List<Expense> = arrayListOf(),
     var funds: List<Fund> = arrayListOf(),
     var equipments: List<Equipment> = arrayListOf(),
-    var tag: String = ""
-)
-
-data class Expense(
-    var id: String = "",
-    var category: String = "",
-    var description: String = "",
-    var price: Int = 0,
-    var quantity: Int = 1,
-    var buyer: String = "",
-    var addedOn: String? = null,
-)
-
-data class Fund(
-    var id: String = "",
-    var from: String = "",
-    var amount: Int = 0,
-    var contributedOn: String? = null,
+    var tag: String = "",
+    var expenseCategories: List<String> = arrayListOf(),
+    var equipmentCategories: List<String> = arrayListOf()
 )
 
 data class Equipment(
@@ -39,19 +26,6 @@ data class Equipment(
     var status: String = "",
     var updatedOn: String? = null,
 )
-
-enum class ExpenseCategory {
-    Bat,
-    Ball,
-    Grip,
-    Breakfast
-}
-
-enum class EquipmentCategory {
-    Bat,
-    Ball,
-    Grip
-}
 
 enum class EquipmentStatus {
     Available,

@@ -9,7 +9,9 @@
             android:title="@string/nav_sports" />
         <item
             android:id="@+id/nav_events"
-            android:title="@string/nav_events"
-            android:visible="false"/>
+            android:title="@string/nav_events" />
+        <item
+            android:id="@+id/nav_members"
+            android:title="@string/nav_members" />
     </group>
 </menu>

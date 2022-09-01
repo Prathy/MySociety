@@ -9,17 +9,16 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/from_container"
-        style="@style/Profile.Constraint.Input"
+        style="@style/Profile.Dropdown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
-        <EditText
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/from"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_fund_from"
-            android:inputType="text"
-            android:autofillHints="name" />
+            android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -34,7 +33,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/prompt_fund_amount"
             android:inputType="number"
-            android:autofillHints="phone" />
+            android:importantForAutofill="no" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -49,7 +48,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/prompt_fund_contributed_on"
             android:inputType="date"
-            android:autofillHints="creditCardExpirationDate" />
+            android:importantForAutofill="no" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

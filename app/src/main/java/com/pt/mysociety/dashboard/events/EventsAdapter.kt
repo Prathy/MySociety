@@ -29,6 +29,7 @@ class EventsAdapter: RecyclerView.Adapter<EventViewHolder>()  {
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val event = events[position]
         holder.binding.title.text = event.name
+        holder.binding.tag.text = event.tag
 
         holder.itemView.setOnClickListener {
             this.itemEventListener.onItemClick(event)

@@ -1,6 +1,7 @@
 package com.pt.mysociety.dashboard.sports.equipment
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pt.mysociety.R
@@ -24,6 +25,8 @@ class SportEquipmentsAdapter: RecyclerView.Adapter<SportEquipmentViewHolder>()  
 
     override fun onBindViewHolder(holder: SportEquipmentViewHolder, position: Int) {
         val equipment = equipments[position]
+        holder.binding.no.visibility = View.VISIBLE
+        holder.binding.no.text = holder.itemView.context.getString(R.string.info_number, position + 1)
         holder.binding.title.text = equipment.description
         holder.binding.tag.text = holder.itemView.context.getString(R.string.item_quantity, equipment.quantity)
     }

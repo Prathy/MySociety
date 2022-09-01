@@ -21,7 +21,7 @@ class ProfileViewModel constructor(private val database: DatabaseReference = Fir
         override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
             if(loggedInUserId == dataSnapshot.key.toString()) {
                 val user: User? = dataSnapshot.getValue(User::class.java)
-                user?.userId = dataSnapshot.key.toString()
+                user?.id = dataSnapshot.key.toString()
                 profile.value = user!!
             }
         }
@@ -46,7 +46,7 @@ class ProfileViewModel constructor(private val database: DatabaseReference = Fir
     }
 
     fun save(user: User) {
-        database.child(user.userId).setValue(user).addOnCompleteListener {
+        database.child(user.id).setValue(user).addOnCompleteListener {
             isProfileUpdated.value = it.isSuccessful
         }
     }

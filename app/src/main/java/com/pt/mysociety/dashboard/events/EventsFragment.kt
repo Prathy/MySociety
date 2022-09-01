@@ -11,14 +11,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.pt.mysociety.R
 import com.pt.mysociety.dashboard.AdapterItemEventListener
+import com.pt.mysociety.dashboard.DashboardActivity
+import com.pt.mysociety.dashboard.FabClickListener
 import com.pt.mysociety.databinding.FragmentPageBinding
 
-class EventsFragment : Fragment(), AdapterItemEventListener {
+class EventsFragment : Fragment(), AdapterItemEventListener, FabClickListener {
 
     private var _binding: FragmentPageBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
     private val adapter = EventsAdapter()
     private lateinit var eventsViewModel: EventsViewModel
@@ -31,6 +30,7 @@ class EventsFragment : Fragment(), AdapterItemEventListener {
         eventsViewModel = ViewModelProvider(this, EventsViewModelFactory())[EventsViewModel::class.java]
         _binding = FragmentPageBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        (activity as DashboardActivity).setFabClickListener(this)
 
         val rvEvents : RecyclerView = binding.rvItems
         rvEvents.itemAnimator = null
@@ -61,8 +61,15 @@ class EventsFragment : Fragment(), AdapterItemEventListener {
     }
 
     override fun onItemClick(item: Any){
-        val bundle = bundleOf("event" to (item as Event).toMap())
-        findNavController().navigate(R.id.action_nav_events_to_event_details, bundle)
+        findNavController().navigate(R.id.action_nav_events_to_event_details,
+            bundleOf(
+                Pair("eventId", (item as Event).id)
+            )
+        )
+    }
+
+    override fun onFabClick() {
+        findNavController().navigate(R.id.action_nav_events_to_event_details)
     }
 
     override fun onDestroyView() {

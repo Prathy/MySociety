@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -23,11 +24,16 @@ interface FabClickListener {
     fun onFabClick()
 }
 
+interface FilterListener {
+    fun onQueryTextChange(query: String)
+}
+
 class DashboardActivity : BaseActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityDashboardBinding
     private var fabClickListener: FabClickListener? = null
+    private var filterListener: FilterListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +50,7 @@ class DashboardActivity : BaseActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_sports, R.id.nav_events
+                R.id.nav_sports, R.id.nav_events, R.id.nav_members
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -61,8 +67,21 @@ class DashboardActivity : BaseActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_profile, menu)
+        val item = menu.findItem(R.id.action_search);
+        val searchView = item?.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+                filterListener?.onQueryTextChange(query ?: "")
+                return true
+            }
+        })
+
         return true
     }
 
@@ -70,7 +89,7 @@ class DashboardActivity : BaseActivity() {
         return when (item.itemId) {
             R.id.action_logout -> {
                 sharedPreference.setUserId(null)
-//                sharedPreference.setUsername(null)
+                sharedPreference.setLastLoginTime(0)
                 sharedPreference.setRole(null)
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
@@ -87,6 +106,10 @@ class DashboardActivity : BaseActivity() {
 
     fun setFabClickListener(callback: FabClickListener) {
         this.fabClickListener = callback
+    }
+
+    fun setFilterListener(callback: FilterListener) {
+        this.filterListener = callback
     }
 
     fun showFab(show: Boolean) {

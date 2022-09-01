@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/prompt_sport_name"
             android:inputType="text"
-            android:autofillHints="name" />
+            android:importantForAutofill="no" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -36,7 +36,7 @@
             android:inputType="textMultiLine"
             android:lines="4"
             android:gravity="start"
-            android:autofillHints="name" />
+            android:importantForAutofill="no" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
@@ -79,7 +79,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_marginTop="16dp"
-            android:layout_height="wrap_content"
+            android:layout_height="65dp"
             android:weightSum="2"
             android:orientation="horizontal">
 
@@ -91,7 +91,7 @@
                 android:layout_marginEnd="8dp" />
 
             <Button
-                android:id="@+id/inventories"
+                android:id="@+id/expenses"
                 style="@style/Actions.OutlinedButton"
                 android:text="@string/action_update_expenses"
                 android:layout_weight="1"
@@ -101,8 +101,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="8dp"
-            android:layout_height="wrap_content"
+            android:layout_height="65dp"
             android:weightSum="2"
             android:orientation="horizontal">
 
@@ -112,6 +111,13 @@
                 android:text="@string/action_update_equipments"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/announcements"
+                style="@style/Actions.OutlinedButton"
+                android:text="@string/action_update_announcements"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp" />
 
         </LinearLayout>
 

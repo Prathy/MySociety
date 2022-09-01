@@ -12,12 +12,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.pt.mysociety.dashboard.DashboardActivity
 import com.pt.mysociety.dashboard.sports.*
+import com.pt.mysociety.data.DateHelper
 import com.pt.mysociety.data.RandomHelper
-import com.pt.mysociety.databinding.FragmentSportEquipmentDetailsBinding
+import com.pt.mysociety.databinding.FragmentEquipmentDetailsBinding
 
 class SportEquipmentDetailsFragment : Fragment() {
 
-    private var _binding: FragmentSportEquipmentDetailsBinding? = null
+    private var _binding: FragmentEquipmentDetailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var sport: Sport
 
@@ -27,7 +28,7 @@ class SportEquipmentDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val sportsViewModel = ViewModelProvider(this, SportsViewModelFactory())[SportsViewModel::class.java]
-        _binding = FragmentSportEquipmentDetailsBinding.inflate(inflater, container, false)
+        _binding = FragmentEquipmentDetailsBinding.inflate(inflater, container, false)
         (activity as DashboardActivity).showFab(false)
 
         val sportId = arguments?.get("sportId") as String
@@ -40,12 +41,16 @@ class SportEquipmentDetailsFragment : Fragment() {
         val etUpdatedOn: EditText = binding.updatedOn
         val btUpdateEquipment = binding.updateEquipment
 
-        val categoryAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_dropdown_item,
-            EquipmentCategory.values()
-        )
-        sdCategory.setAdapter(categoryAdapter)
+        etUpdatedOn.setText(DateHelper.toSimpleString())
+
+        fun setCategoryAdapter(equipments: List<String>) {
+            val categoryAdapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                equipments
+            )
+            sdCategory.setAdapter(categoryAdapter)
+        }
 
         val statusAdapter = ArrayAdapter(
             requireContext(),
@@ -71,6 +76,7 @@ class SportEquipmentDetailsFragment : Fragment() {
         sportsViewModel.getSport(sportId)
         sportsViewModel.sport.observe(viewLifecycleOwner) {
             sport = it
+            setCategoryAdapter(sport.equipmentCategories)
         }
 
         return root

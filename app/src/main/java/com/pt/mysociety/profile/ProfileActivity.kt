@@ -34,39 +34,39 @@ class ProfileActivity : BaseActivity() {
             android.R.layout.simple_spinner_dropdown_item,
             societyHelper.getWings()
         )
-        binding.wing.setAdapter(wingAdapter)
+        binding.addHouseContainer.wing.setAdapter(wingAdapter)
 
         val floorAdapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_dropdown_item,
             societyHelper.getFloors()
         )
-        binding.floor.setAdapter(floorAdapter)
+        binding.addHouseContainer.floor.setAdapter(floorAdapter)
 
-        binding.wing.setOnItemClickListener { _, _, position, _ ->
+        binding.addHouseContainer.wing.setOnItemClickListener { _, _, position, _ ->
             setHouseAdapter(wingAdapter.getItem(position)!!)
         }
 
         binding.saveProfile.setOnClickListener {
             profileViewModel.save(
                 User(
-                    userId = sharedPreference.getUserId(),
+                    id = sharedPreference.getUserId(),
                     email = sharedPreference.getUsername(),
-                    displayName = binding.name.text.toString(),
-                    wing = binding.wing.text.toString(),
-                    floor = binding.floor.text.toString().toInt(),
-                    house = binding.house.text.toString().toInt(),
+                    name = binding.name.text.toString(),
+                    wing = binding.addHouseContainer.wing.text.toString(),
+                    floor = binding.addHouseContainer.floor.text.toString().toInt(),
+                    house = binding.addHouseContainer.house.text.toString().toInt(),
                     role = UserHelper.roleUser,
                     updated = true
                 ))
         }
 
         profileViewModel.profile.observe(this) {
-            binding.name.setText(it.displayName.toString())
-            binding.wing.setText(it.wing, false)
+            binding.name.setText(it.name.toString())
+            binding.addHouseContainer.wing.setText(it.wing, false)
             setHouseAdapter(it.wing!!)
-            binding.floor.setText(it.floor.toString(), false)
-            binding.house.setText(it.house.toString(), false)
+            binding.addHouseContainer.floor.setText(it.floor.toString(), false)
+            binding.addHouseContainer.house.setText(it.house.toString(), false)
         }
 
         profileViewModel.isProfileUpdated.observe(this){
@@ -88,7 +88,7 @@ class ProfileActivity : BaseActivity() {
             android.R.layout.simple_spinner_dropdown_item,
             SocietyHelper().getHouse(wing)
         )
-        binding.house.setAdapter(houseAdapter)
+        binding.addHouseContainer.house.setAdapter(houseAdapter)
     }
 
 }

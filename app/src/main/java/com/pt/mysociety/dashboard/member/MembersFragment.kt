@@ -1,4 +1,4 @@
-package com.pt.mysociety.dashboard.sports.expense
+package com.pt.mysociety.dashboard.member
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,51 +13,48 @@ import com.pt.mysociety.R
 import com.pt.mysociety.dashboard.AdapterItemEventListener
 import com.pt.mysociety.dashboard.DashboardActivity
 import com.pt.mysociety.dashboard.FabClickListener
-import com.pt.mysociety.dashboard.sports.Expense
-import com.pt.mysociety.dashboard.sports.SportsViewModel
-import com.pt.mysociety.dashboard.sports.SportsViewModelFactory
+import com.pt.mysociety.dashboard.FilterListener
 import com.pt.mysociety.databinding.FragmentPageBinding
+import com.pt.mysociety.login.model.User
 
-class SportExpensesFragment : Fragment(), AdapterItemEventListener, FabClickListener {
+class MembersFragment : Fragment(), AdapterItemEventListener, FabClickListener, FilterListener {
 
     private var _binding: FragmentPageBinding? = null
     private val binding get() = _binding!!
-    private lateinit var sportsViewModel: SportsViewModel
-    private val adapter = SportExpensesAdapter()
-    private lateinit var sportId: String
+    private lateinit var membersViewModel: MembersViewModel
+    private val adapter = MembersAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        sportsViewModel = ViewModelProvider(this, SportsViewModelFactory())[SportsViewModel::class.java]
+        membersViewModel = ViewModelProvider(this, MembersViewModelFactory())[MembersViewModel::class.java]
         _binding = FragmentPageBinding.inflate(inflater, container, false)
         val root: View = binding.root
         (activity as DashboardActivity).setFabClickListener(this)
-
-        sportId = arguments?.get("sportId") as String
+        (activity as DashboardActivity).setFilterListener(this)
 
         val rvSports : RecyclerView = binding.rvItems
         rvSports.itemAnimator = null
         rvSports.adapter = adapter
         adapter.setListener(this)
-        sportsViewModel.sport.observe(viewLifecycleOwner) {
-            adapter.setSportExpenses(it.expenses)
+        membersViewModel.members.observe(viewLifecycleOwner) {
+            adapter.setMembers(it)
         }
 
         val loading = binding.loading
-        sportsViewModel.isLoading.observe(viewLifecycleOwner) {
+        membersViewModel.isLoading.observe(viewLifecycleOwner) {
             loading.visibility = if(it) View.VISIBLE else View.GONE
         }
 
         val tvMessage = binding.tvMessage
-        sportsViewModel.isDataExist.observe(viewLifecycleOwner) {
+        membersViewModel.isDataExist.observe(viewLifecycleOwner) {
             loading.visibility = if(it) View.GONE else loading.visibility
             tvMessage.visibility = if(it) View.GONE else View.VISIBLE
         }
 
-        sportsViewModel.getSport(sportId)
+        membersViewModel.init()
         return root
     }
 
@@ -68,23 +65,23 @@ class SportExpensesFragment : Fragment(), AdapterItemEventListener, FabClickList
 
     override fun onPause() {
         super.onPause()
-        sportsViewModel.onPause()
+        membersViewModel.onPause()
     }
 
     override fun onItemClick(item: Any){
         findNavController().navigate(
-            R.id.action_nav_sport_expenses_to_sport_expense_details, bundleOf(
-            Pair("sportId", sportId), Pair("expenseId", (item as Expense).id)
-        )
+            R.id.action_nav_members_to_member_details, bundleOf(
+                Pair("memberId", (item as User).id)
+            )
         )
     }
 
     override fun onFabClick() {
-        findNavController().navigate(
-            R.id.action_nav_sport_expenses_to_sport_expense_details, bundleOf(
-                Pair("sportId", sportId)
-            )
-        )
+        findNavController().navigate(R.id.action_nav_members_to_member_details)
+    }
+
+    override fun onQueryTextChange(query: String) {
+        adapter.filter.filter(query)
     }
 
     override fun onDestroyView() {

@@ -18,8 +18,8 @@
             android:id="@+id/category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/prompt_equipment_category"
-            android:inputType="none" />
+            android:hint="@string/prompt_expense_category"
+            android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -32,11 +32,26 @@
             android:id="@+id/desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/prompt_equipment_description"
+            android:hint="@string/prompt_expense_desc"
             android:inputType="textMultiLine"
             android:lines="2"
             android:gravity="start"
-            android:autofillHints="name" />
+            android:importantForAutofill="no" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/price_container"
+        style="@style/Profile.Constraint.Input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/desc_container">
+        <EditText
+            android:id="@+id/price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_expense_price"
+            android:inputType="number"
+            android:importantForAutofill="no" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -44,54 +59,73 @@
         style="@style/Profile.Constraint.Input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/desc_container">
+        app:layout_constraintTop_toBottomOf="@+id/price_container">
         <EditText
             android:id="@+id/quantity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/prompt_equipment_quantity"
+            android:hint="@string/prompt_expense_quantity"
             android:inputType="number"
-            android:autofillHints="phone" />
+            android:importantForAutofill="no" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/status_container"
+        android:id="@+id/buyer_container"
         style="@style/Profile.Dropdown"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quantity_container" >
-
+        app:layout_constraintTop_toBottomOf="@+id/quantity_container">
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
-            android:id="@+id/status"
+            android:id="@+id/buyer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/prompt_equipment_status"
-            android:inputType="none" />
+            android:hint="@string/prompt_expense_buyer"
+            android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/updated_on_container"
+        android:id="@+id/added_on_container"
         style="@style/Profile.Constraint.Input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/status_container">
+        app:layout_constraintTop_toBottomOf="@+id/buyer_container">
         <EditText
-            android:id="@+id/updatedOn"
+            android:id="@+id/addedOn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/prompt_equipment_updated_on"
+            android:hint="@string/prompt_expense_added_on"
             android:inputType="date"
-            android:autofillHints="creditCardExpirationDate" />
+            android:importantForAutofill="no" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/cbEquipment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/added_on_container"
+        android:layout_marginTop="8dp"
+        android:text="@string/prompt_expense_equipment" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/cbSettleUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cbEquipment"
+        android:layout_marginTop="8dp"
+        android:text="@string/prompt_expense_settle_up" />
+
     <Button
-        android:id="@+id/updateEquipment"
+        android:id="@+id/addExpense"
         style="@style/Actions.Button"
-        android:text="@string/action_update"
+        android:text="@string/action_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/updated_on_container" />
+        app:layout_constraintTop_toBottomOf="@+id/cbSettleUp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

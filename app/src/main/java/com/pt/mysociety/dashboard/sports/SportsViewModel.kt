@@ -8,6 +8,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.pt.mysociety.dashboard.expense.Expense
+import com.pt.mysociety.dashboard.fund.Fund
 
 class SportsViewModel constructor(private val database: DatabaseReference = Firebase.database.reference.child("sports")) : ViewModel() {
 
@@ -72,12 +74,12 @@ class SportsViewModel constructor(private val database: DatabaseReference = Fire
         }
     }
 
-    fun getSportInventory(sportId: String, inventoryId: String) {
+    fun getSportExpenses(sportId: String, expenseId: String) {
         isLoading.value = true
         database.child(sportId).get().addOnSuccessListener { sport ->
             this.sport.value = sport.getValue(Sport::class.java)
             val expense: Expense? = this.sport.value?.expenses?.find { inventory ->
-                inventory.id == inventoryId
+                inventory.id == expenseId
             }
             if (expense != null) {
                 this.expense.value = expense

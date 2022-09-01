@@ -1,11 +1,11 @@
-package com.pt.mysociety.dashboard.sports.expense
+package com.pt.mysociety.dashboard.expense
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pt.mysociety.R
 import com.pt.mysociety.dashboard.AdapterItemEventListener
-import com.pt.mysociety.dashboard.sports.Expense
 import com.pt.mysociety.data.CurrencyHelper
 import com.pt.mysociety.databinding.AdapterItemBinding
 
@@ -31,8 +31,14 @@ class SportExpensesAdapter: RecyclerView.Adapter<SportExpenseViewHolder>()  {
 
     override fun onBindViewHolder(holder: SportExpenseViewHolder, position: Int) {
         val expense = expenses[position]
+        holder.binding.no.visibility = View.VISIBLE
+        holder.binding.no.text = holder.itemView.context.getString(R.string.info_number, position + 1)
         holder.binding.title.text = expense.description
-        holder.binding.tag.text = holder.itemView.context.getString(R.string.item_price, CurrencyHelper.convertToRupees(expense.price))
+        holder.binding.tag.text = holder.itemView.context.getString(R.string.item_price,
+            CurrencyHelper.convertToRupees(expense.price),
+            expense.quantity,
+            CurrencyHelper.convertToRupees(expense.price * expense.quantity)
+        )
 
         holder.itemView.setOnClickListener {
             this.itemSportListener.onItemClick(expense)

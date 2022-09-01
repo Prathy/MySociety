@@ -4,6 +4,7 @@
 
     <!-- Strings related to action bar menu -->
     <string name="action_logout">Logout</string>
+    <string name="action_search">Search</string>
     <string name="action_save">Save</string>
     <string name="action_create">Create</string>
     <string name="action_add">Add</string>
@@ -32,6 +33,8 @@
     <string name="nav_events">Events</string>
     <string name="nav_event_details">Event Details</string>
     <string name="prompt_event_name">Name</string>
+    <string name="prompt_event_min_contribution">Minimum Contribution</string>
+    <string name="prompt_event_date">Event Date</string>
 
 
     <!-- Strings related to sport -->
@@ -43,28 +46,36 @@
     <string name="nav_sport_fund_details">Fund Details</string>
     <string name="nav_sport_equipments">Equipments</string>
     <string name="nav_sport_equipment_details">Equipment Details</string>
+    <string name="nav_sport_announcements">Announcements</string>
     <string name="prompt_sport_name">Name</string>
     <string name="prompt_sport_tag">Tag</string>
     <string name="info_total_funds">Total Funds: %s</string>
     <string name="info_total_expenses">Total Expenses: %s</string>
     <string name="info_balance">Balance: %s</string>
-    <string name="info_bats">Bats: %d</string>
-    <string name="info_balls">Balls: %d</string>
+    <string name="info_number">%d.</string>
+    <string name="info_bats">Bats: %d / %d</string>
+    <string name="info_balls">Balls: %d / %d</string>
     <string name="info_equipments">Equipments:</string>
+    <string name="info_house">House: %s</string>
     <string name="action_update_funds">Funds</string>
     <string name="action_update_expenses">Expenses</string>
     <string name="action_update_equipments">Equipments</string>
+    <string name="action_update_announcements">Announcements</string>
     <string name="prompt_expense_category">Category</string>
     <string name="prompt_expense_desc">Description</string>
     <string name="prompt_expense_price">Price</string>
     <string name="prompt_expense_quantity">Quantity</string>
     <string name="prompt_expense_buyer">Buyer</string>
     <string name="prompt_expense_added_on">Added On</string>
-    <string name="item_price">Price: %s</string>
+    <string name="prompt_expense_settle_up">Settle Up</string>
+    <string name="prompt_expense_equipment">Equipment</string>
+    <string name="prompt_expense_settled">Settled</string>
+    <string name="item_price">Price: %s * %d = %s</string>
     <string name="item_contribution">Contribution: %s</string>
     <string name="prompt_fund_from">From</string>
     <string name="prompt_fund_amount">Amount</string>
     <string name="prompt_fund_contributed_on">Contributed On</string>
+    <string name="minimum_fund_amount">200</string>
     <string name="item_quantity">Quantity: %d</string>
     <string name="prompt_equipment_category">Category</string>
     <string name="prompt_equipment_description">Description</string>
@@ -75,9 +86,15 @@
     <!-- Strings related to profile -->
     <string name="title_activity_profile">Profile</string>
     <string name="prompt_profile_name">Name</string>
+    <string name="prompt_profile_email">Email</string>
+    <string name="prompt_profile_contact">Contact</string>
     <string name="prompt_profile_wing">Wing</string>
     <string name="prompt_profile_floor">Floor</string>
     <string name="prompt_profile_house">House</string>
 
+    <!-- Strings related to members -->
+    <string name="nav_members">Members</string>
+    <string name="nav_members_details">Member Details</string>
+    <string name="label_member_house">%s(%s)</string>
 
 </resources>

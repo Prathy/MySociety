@@ -2,8 +2,6 @@ package com.pt.mysociety.login
 
 import android.app.Activity
 import android.content.Intent
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,9 +9,12 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.pt.mysociety.BaseActivity
+import com.pt.mysociety.InAppUpdate
 import com.pt.mysociety.dashboard.DashboardActivity
 import com.pt.mysociety.data.UserHelper
 import com.pt.mysociety.databinding.ActivityLoginBinding
@@ -21,17 +22,28 @@ import com.pt.mysociety.login.model.User
 import com.pt.mysociety.login.view.LoginViewModel
 import com.pt.mysociety.login.view.LoginViewModelFactory
 import com.pt.mysociety.profile.ProfileActivity
+import java.util.*
+import java.util.concurrent.TimeUnit
+
 
 class LoginActivity : BaseActivity() {
 
+    private lateinit var inAppUpdate: InAppUpdate
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        inAppUpdate = InAppUpdate(this)
+
+        val diffInDays: Long = TimeUnit.MILLISECONDS.toDays(Date().time - sharedPreference.getLastLoginTime())
+        if(diffInDays < 1){
+            startActivity(Intent(this, DashboardActivity::class.java))
+            setResult(Activity.RESULT_OK)
+            finish()
+        }
 
         val username = binding.username
         username.setText(sharedPreference.getUsername())
@@ -110,8 +122,9 @@ class LoginActivity : BaseActivity() {
 
     private fun updateUiWithUser(user: User) {
         UserHelper.updateUserPref(this, user)
-        Firebase.database.reference.child("users").child(user.userId).get().addOnCompleteListener { task ->
+        Firebase.database.reference.child("users").child(user.id).get().addOnCompleteListener { task ->
             val loggedInUser: User? = if(task.result.value != null) task.result.getValue(User::class.java) else null
+            loggedInUser?.id = user.id
             UserHelper.updateUserPref(this, loggedInUser)
             val intent = if(loggedInUser != null && loggedInUser.updated) {
                 Intent(this, DashboardActivity::class.java)
@@ -119,14 +132,30 @@ class LoginActivity : BaseActivity() {
                 Intent(this, ProfileActivity::class.java)
             }
 
+            sharedPreference.setLastLoginTime(Date().time)
             startActivity(intent)
             setResult(Activity.RESULT_OK)
             finish()
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        inAppUpdate.onActivityResult(requestCode,resultCode, data)
+    }
+
     private fun showLoginFailed(errorString: String) {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        inAppUpdate.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        inAppUpdate.onDestroy()
     }
 }
 

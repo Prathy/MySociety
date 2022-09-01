@@ -14,11 +14,11 @@ import com.pt.mysociety.R
 import com.pt.mysociety.dashboard.DashboardActivity
 import com.pt.mysociety.dashboard.FabClickListener
 import com.pt.mysociety.dashboard.sports.*
-import com.pt.mysociety.databinding.FragmentSportEquipmentsBinding
+import com.pt.mysociety.databinding.FragmentEquipmentsBinding
 
 class SportEquipmentsFragment : Fragment(), FabClickListener {
 
-    private var _binding: FragmentSportEquipmentsBinding? = null
+    private var _binding: FragmentEquipmentsBinding? = null
     private val binding get() = _binding!!
     private val adapter = SportEquipmentsAdapter()
     private lateinit var sportId: String
@@ -29,7 +29,7 @@ class SportEquipmentsFragment : Fragment(), FabClickListener {
         savedInstanceState: Bundle?
     ): View {
         val sportsViewModel = ViewModelProvider(this, SportsViewModelFactory())[SportsViewModel::class.java]
-        _binding = FragmentSportEquipmentsBinding.inflate(inflater, container, false)
+        _binding = FragmentEquipmentsBinding.inflate(inflater, container, false)
         (activity as DashboardActivity).setFabClickListener(this)
 
         val root: View = binding.root
@@ -47,34 +47,38 @@ class SportEquipmentsFragment : Fragment(), FabClickListener {
 
         sportsViewModel.sport.observe(viewLifecycleOwner) {
             if(it !== null) {
+                var availableBats = 0
+                var availableBalls = 0
                 var totalBats = 0
                 var totalBalls = 0
                 it.equipments.forEach { equipment ->
                     when(equipment.status) {
                         EquipmentStatus.Available.name -> {
                             when (equipment.category) {
-                                EquipmentCategory.Bat.name -> {
+                                "Bat" -> {
                                     totalBats += equipment.quantity
+                                    availableBats += equipment.quantity
                                 }
-                                EquipmentCategory.Ball.name -> {
+                                "Ball" -> {
                                     totalBalls += equipment.quantity
+                                    availableBalls += equipment.quantity
                                 }
                             }
                         }
                         EquipmentStatus.UnAvailable.name -> {
                             when (equipment.category) {
-                                EquipmentCategory.Bat.name -> {
-                                    totalBats -= equipment.quantity
+                                "Bat" -> {
+                                    availableBats -= equipment.quantity
                                 }
-                                EquipmentCategory.Ball.name -> {
-                                    totalBalls -= equipment.quantity
+                                "Ball" -> {
+                                    availableBalls -= equipment.quantity
                                 }
                             }
                         }
                     }
                 }
-                tvBats.text = getString(R.string.info_bats, totalBats)
-                tvBalls.text = getString(R.string.info_balls, totalBalls)
+                tvBats.text = getString(R.string.info_bats, availableBats, totalBats)
+                tvBalls.text = getString(R.string.info_balls, availableBalls, totalBalls)
             }
         }
 
@@ -90,7 +94,7 @@ class SportEquipmentsFragment : Fragment(), FabClickListener {
 
     override fun onFabClick() {
         findNavController().navigate(
-            R.id.action_nav_sport_equipments_to_sport_equipment_details, bundleOf(
+            R.id.action_nav_equipments_to_equipment_details, bundleOf(
                 Pair("sportId", sportId)
             )
         )

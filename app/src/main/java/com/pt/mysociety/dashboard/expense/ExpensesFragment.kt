@@ -1,4 +1,4 @@
-package com.pt.mysociety.dashboard.sports.fund
+package com.pt.mysociety.dashboard.expense
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,16 +13,21 @@ import com.pt.mysociety.R
 import com.pt.mysociety.dashboard.AdapterItemEventListener
 import com.pt.mysociety.dashboard.DashboardActivity
 import com.pt.mysociety.dashboard.FabClickListener
-import com.pt.mysociety.dashboard.sports.*
+import com.pt.mysociety.dashboard.events.EventsViewModel
+import com.pt.mysociety.dashboard.events.EventsViewModelFactory
+import com.pt.mysociety.dashboard.sports.SportsViewModel
+import com.pt.mysociety.dashboard.sports.SportsViewModelFactory
 import com.pt.mysociety.databinding.FragmentPageBinding
 
-class SportFundsFragment : Fragment(), AdapterItemEventListener, FabClickListener {
+class ExpensesFragment : Fragment(), AdapterItemEventListener, FabClickListener {
 
     private var _binding: FragmentPageBinding? = null
     private val binding get() = _binding!!
     private lateinit var sportsViewModel: SportsViewModel
-    private val adapter = SportFundsAdapter()
+    private lateinit var eventsViewModel: EventsViewModel
+    private val adapter = SportExpensesAdapter()
     private lateinit var sportId: String
+    private lateinit var eventId: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,22 +35,23 @@ class SportFundsFragment : Fragment(), AdapterItemEventListener, FabClickListene
         savedInstanceState: Bundle?
     ): View {
         sportsViewModel = ViewModelProvider(this, SportsViewModelFactory())[SportsViewModel::class.java]
+        eventsViewModel = ViewModelProvider(this, EventsViewModelFactory())[EventsViewModel::class.java]
         _binding = FragmentPageBinding.inflate(inflater, container, false)
         val root: View = binding.root
         (activity as DashboardActivity).setFabClickListener(this)
 
-        sportId = arguments?.get("sportId") as String
+        sportId = (arguments?.get("sportId") ?: "") as String
+        eventId = (arguments?.get("eventId") ?: "") as String
 
         val rvSports : RecyclerView = binding.rvItems
         rvSports.itemAnimator = null
         rvSports.adapter = adapter
         adapter.setListener(this)
-        sportsViewModel.sport.observe(viewLifecycleOwner) {
-            adapter.setSportFunds(it.funds)
-        }
-
         val loading = binding.loading
         sportsViewModel.isLoading.observe(viewLifecycleOwner) {
+            loading.visibility = if(it) View.VISIBLE else View.GONE
+        }
+        eventsViewModel.isLoading.observe(viewLifecycleOwner) {
             loading.visibility = if(it) View.VISIBLE else View.GONE
         }
 
@@ -54,8 +60,25 @@ class SportFundsFragment : Fragment(), AdapterItemEventListener, FabClickListene
             loading.visibility = if(it) View.GONE else loading.visibility
             tvMessage.visibility = if(it) View.GONE else View.VISIBLE
         }
+        eventsViewModel.isDataExist.observe(viewLifecycleOwner) {
+            loading.visibility = if(it) View.GONE else loading.visibility
+            tvMessage.visibility = if(it) View.GONE else View.VISIBLE
+        }
 
-        sportsViewModel.getSport(sportId)
+        if(sportId.isNotEmpty()) {
+            sportsViewModel.getSport(sportId)
+        }
+        sportsViewModel.sport.observe(viewLifecycleOwner) {
+            adapter.setSportExpenses(it.expenses)
+        }
+
+        if(eventId.isNotEmpty()) {
+            eventsViewModel.getEvent(eventId)
+        }
+        eventsViewModel.event.observe(viewLifecycleOwner) {
+            adapter.setSportExpenses(it.expenses)
+        }
+
         return root
     }
 
@@ -71,16 +94,20 @@ class SportFundsFragment : Fragment(), AdapterItemEventListener, FabClickListene
 
     override fun onItemClick(item: Any){
         findNavController().navigate(
-            R.id.action_nav_sport_funds_to_sport_fund_details, bundleOf(
-                Pair("sportId", sportId), Pair("fundId", (item as Fund).id)
+            R.id.action_nav_expenses_to_expense_details,
+            bundleOf(
+                Pair("sportId", sportId),
+                Pair("eventId", eventId),
+                Pair("expenseId", (item as Expense).id)
             )
         )
     }
 
     override fun onFabClick() {
         findNavController().navigate(
-            R.id.action_nav_sport_funds_to_sport_fund_details, bundleOf(
-                Pair("sportId", sportId)
+            R.id.action_nav_expenses_to_expense_details, bundleOf(
+                Pair("sportId", sportId),
+                Pair("eventId", eventId)
             )
         )
     }
