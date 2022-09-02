@@ -28,7 +28,6 @@ class MemberDetailsFragment : BaseFragment() {
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         _binding = FragmentMemberDetailsBinding.inflate(inflater, container, false)
-        (activity as DashboardActivity).showFab(false)
 
         val root: View = binding.root
         val etName: EditText = binding.name
@@ -99,6 +98,11 @@ class MemberDetailsFragment : BaseFragment() {
             SocietyHelper().getHouse(wing)
         )
         binding.addHouseContainer.house.setAdapter(houseAdapter)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as DashboardActivity).showFab(false)
     }
 
     override fun onDestroyView() {

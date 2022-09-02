@@ -30,7 +30,6 @@ class SportDetailsFragment : Fragment() {
     ): View {
         val sportsViewModel = ViewModelProvider(this, SportsViewModelFactory())[SportsViewModel::class.java]
         _binding = FragmentSportDetailsBinding.inflate(inflater, container, false)
-        (activity as DashboardActivity).showFab(false)
 
         val root: View = binding.root
         val etName: EditText = binding.name
@@ -123,6 +122,11 @@ class SportDetailsFragment : Fragment() {
         }
 
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as DashboardActivity).showFab(false)
     }
 
     override fun onDestroyView() {

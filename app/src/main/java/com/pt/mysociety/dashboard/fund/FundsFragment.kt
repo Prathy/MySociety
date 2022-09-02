@@ -1,10 +1,12 @@
 package com.pt.mysociety.dashboard.fund
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.SearchView
 import androidx.core.os.bundleOf
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +18,7 @@ import com.pt.mysociety.dashboard.sports.*
 import com.pt.mysociety.databinding.FragmentPageBinding
 import com.pt.mysociety.login.model.User
 
-class FundsFragment : BaseFragment(), AdapterItemEventListener, FabClickListener, FilterListener {
+class FundsFragment : FilterFragment(), AdapterItemEventListener, FabClickListener, FilterListener {
 
     private var _binding: FragmentPageBinding? = null
     private val binding get() = _binding!!
@@ -37,7 +39,7 @@ class FundsFragment : BaseFragment(), AdapterItemEventListener, FabClickListener
         _binding = FragmentPageBinding.inflate(inflater, container, false)
         val root: View = binding.root
         (activity as DashboardActivity).setFabClickListener(this)
-        (activity as DashboardActivity).setFilterListener(this)
+        setFilterListener(this)
 
         sportId = (arguments?.get("sportId") ?: "") as String
         eventId = (arguments?.get("eventId") ?: "") as String
@@ -102,6 +104,10 @@ class FundsFragment : BaseFragment(), AdapterItemEventListener, FabClickListener
         sportsViewModel.onPause()
     }
 
+    override fun onQueryTextChange(query: String) {
+        adapter.filter.filter(query)
+    }
+
     override fun onItemClick(item: Any){
         findNavController().navigate(
             R.id.action_nav_funds_to_fund_details, bundleOf(
@@ -116,10 +122,6 @@ class FundsFragment : BaseFragment(), AdapterItemEventListener, FabClickListener
                 Pair("sportId", sportId), Pair("eventId", eventId)
             )
         )
-    }
-
-    override fun onQueryTextChange(query: String) {
-        adapter.filter.filter(query)
     }
 
     override fun onDestroyView() {

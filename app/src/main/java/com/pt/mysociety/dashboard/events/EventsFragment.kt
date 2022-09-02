@@ -55,6 +55,10 @@ class EventsFragment : Fragment(), AdapterItemEventListener, FabClickListener {
         return root
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     override fun onPause() {
         super.onPause()
         eventsViewModel.onPause()

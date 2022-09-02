@@ -30,7 +30,6 @@ class EventDetailsFragment : Fragment() {
     ): View {
         val eventsViewModel = ViewModelProvider(this, EventsViewModelFactory())[EventsViewModel::class.java]
         _binding = FragmentEventDetailsBinding.inflate(inflater, container, false)
-        (activity as DashboardActivity).showFab(false)
 
         val root: View = binding.root
         val etName: EditText = binding.name
@@ -118,6 +117,11 @@ class EventDetailsFragment : Fragment() {
         }
 
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as DashboardActivity).showFab(false)
     }
 
     override fun onDestroyView() {

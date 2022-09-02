@@ -1,5 +1,6 @@
 package com.pt.mysociety.dashboard.member
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.database.ChildEventListener
@@ -40,6 +41,7 @@ class MembersViewModel constructor(private val database: DatabaseReference = Fir
     }
 
     fun init() {
+        Log.d("Dashboard", "init()")
         isLoading.value = true
         members.value = listOf()
         database.addChildEventListener(childEventListener)

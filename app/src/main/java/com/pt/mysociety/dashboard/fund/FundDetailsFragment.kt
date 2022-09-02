@@ -39,7 +39,6 @@ class FundDetailsFragment : BaseFragment() {
         val sportsViewModel = ViewModelProvider(this, SportsViewModelFactory())[SportsViewModel::class.java]
         val eventsViewModel = ViewModelProvider(this, EventsViewModelFactory())[EventsViewModel::class.java]
         _binding = FragmentFundDetailsBinding.inflate(inflater, container, false)
-        (activity as DashboardActivity).showFab(false)
 
         val root: View = binding.root
         val etFrom: AutoCompleteTextView = binding.from
@@ -137,6 +136,11 @@ class FundDetailsFragment : BaseFragment() {
             setFundDetails()
         }
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as DashboardActivity).showFab(false)
     }
 
     override fun onDestroyView() {

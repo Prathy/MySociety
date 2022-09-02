@@ -2,10 +2,10 @@ package com.pt.mysociety.dashboard
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.SearchView
 import android.widget.TextView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -24,19 +24,15 @@ interface FabClickListener {
     fun onFabClick()
 }
 
-interface FilterListener {
-    fun onQueryTextChange(query: String)
-}
-
 class DashboardActivity : BaseActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityDashboardBinding
     private var fabClickListener: FabClickListener? = null
-    private var filterListener: FilterListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("Dashboard", "onCreate")
 
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -68,20 +64,6 @@ class DashboardActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_profile, menu)
-        val item = menu.findItem(R.id.action_search);
-        val searchView = item?.actionView as SearchView
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(p0: String?): Boolean {
-                return true
-            }
-
-            override fun onQueryTextChange(query: String?): Boolean {
-                filterListener?.onQueryTextChange(query ?: "")
-                return true
-            }
-        })
-
         return true
     }
 
@@ -108,15 +90,12 @@ class DashboardActivity : BaseActivity() {
         this.fabClickListener = callback
     }
 
-    fun setFilterListener(callback: FilterListener) {
-        this.filterListener = callback
-    }
-
     fun showFab(show: Boolean) {
         if(UserHelper.isAdmin(this) && show){
             binding.appBarMain.fab.visibility = View.VISIBLE
         } else {
             binding.appBarMain.fab.visibility = View.INVISIBLE
+            binding.appBarMain.toolbar.menu.findItem(R.id.action_search).isVisible = false
         }
     }
 }
