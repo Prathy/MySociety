@@ -69,14 +69,14 @@ class ExpensesFragment : Fragment(), AdapterItemEventListener, FabClickListener 
             sportsViewModel.getSport(sportId)
         }
         sportsViewModel.sport.observe(viewLifecycleOwner) {
-            adapter.setSportExpenses(it.expenses)
+            adapter.setSportExpenses(it.expenses.values.toList())
         }
 
         if(eventId.isNotEmpty()) {
             eventsViewModel.getEvent(eventId)
         }
         eventsViewModel.event.observe(viewLifecycleOwner) {
-            adapter.setSportExpenses(it.expenses)
+            adapter.setSportExpenses(it.expenses.values.toList())
         }
 
         return root

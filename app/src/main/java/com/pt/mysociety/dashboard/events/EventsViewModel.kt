@@ -10,7 +10,6 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.pt.mysociety.dashboard.expense.Expense
 import com.pt.mysociety.dashboard.fund.Fund
-import com.pt.mysociety.dashboard.sports.Sport
 
 class EventsViewModel constructor(private val database: DatabaseReference = Firebase.database.reference.child("events")) : ViewModel() {
 
@@ -20,6 +19,7 @@ class EventsViewModel constructor(private val database: DatabaseReference = Fire
     val fund = MutableLiveData<Fund>()
     var isLoading = MutableLiveData<Boolean>()
     var isDataExist = MutableLiveData<Boolean>()
+    var isDeleted = MutableLiveData<Boolean>()
 
     private val childEventListener: ChildEventListener = object : ChildEventListener {
         override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
@@ -75,13 +75,11 @@ class EventsViewModel constructor(private val database: DatabaseReference = Fire
         }
     }
 
-    fun getEventExpenses(sportId: String, expenseId: String) {
+    fun getEventExpenses(eventId: String, expenseId: String) {
         isLoading.value = true
-        database.child(sportId).get().addOnSuccessListener { sport ->
-            this.event.value = sport.getValue(Event::class.java)
-            val expense: Expense? = this.event.value?.expenses?.find { inventory ->
-                inventory.id == expenseId
-            }
+        database.child(eventId).get().addOnSuccessListener { event ->
+            this.event.value = event.getValue(Event::class.java)
+            val expense: Expense? = this.event.value?.expenses?.get(expenseId)
             if (expense != null) {
                 this.expense.value = expense
             }
@@ -89,17 +87,28 @@ class EventsViewModel constructor(private val database: DatabaseReference = Fire
         }
     }
 
-    fun getEventFund(sportId: String, fundId: String) {
+    fun getEventFund(eventId: String, fundId: String) {
         isLoading.value = true
-        database.child(sportId).get().addOnSuccessListener { sport ->
-            this.event.value = sport.getValue(Event::class.java)
-            val fund: Fund? = this.event.value?.funds?.find { fund ->
-                fund.id == fundId
-            }
+        database.child(eventId).get().addOnSuccessListener { event ->
+            this.event.value = event.getValue(Event::class.java)
+            val fund: Fund? = this.event.value?.funds?.get(fundId)
             if (fund != null) {
                 this.fund.value = fund
             }
             isLoading.value = false
+        }
+    }
+
+    fun deleteFund(eventId: String, fundId: String) {
+        isDeleted.value = false
+        database.child(eventId).get().addOnSuccessListener { _event ->
+            val event = _event.getValue(Event::class.java)
+            if(event != null){
+                event.funds.remove(fundId)
+                database.child(eventId).setValue(event).addOnCompleteListener{
+                    isDeleted.value = true
+                }
+            }
         }
     }
 }

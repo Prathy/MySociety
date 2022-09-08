@@ -62,10 +62,12 @@ class MembersAdapter: RecyclerView.Adapter<MemberViewHolder>(), Filterable  {
                     members as ArrayList<User>
                 } else {
                     val resultList = ArrayList<User>()
-                    for (row in members) {
-                        if (row.name?.lowercase(Locale.ROOT)
-                                ?.contains(constraint.toString().lowercase(Locale.ROOT)) == true) {
-                            resultList.add(row)
+                    for (member in members) {
+                        if (member.name?.lowercase(Locale.ROOT)
+                                ?.contains(constraint.toString().lowercase(Locale.ROOT)) == true
+                            || UserHelper.getHouse(member).contains(constraint.toString())
+                        ) {
+                            resultList.add(member)
                         }
                     }
                     resultList

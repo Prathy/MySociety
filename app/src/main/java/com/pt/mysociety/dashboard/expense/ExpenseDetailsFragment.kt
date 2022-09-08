@@ -55,11 +55,18 @@ class ExpenseDetailsFragment : BaseFragment() {
         val sportId = (arguments?.get("sportId") ?: "") as String
         val eventId = (arguments?.get("eventId") ?: "") as String
         val expenseId: String = (arguments?.get("expenseId") ?: "") as String
-        if(expenseId.isEmpty()){
-            expense = Expense()
-        }
 
-        btAddExpense.visibility = if(expenseId.isNotEmpty()) View.INVISIBLE else View.VISIBLE
+        if(!UserHelper.isAdmin(requireContext())) {
+            sdCategory.isEnabled = false
+            etDesc.isEnabled = false
+            etPrice.isEnabled = false
+            etQuantity.isEnabled = false
+            etFrom.isEnabled = false
+            etAddedOn.isEnabled = false
+            cbSettleUp.isEnabled = false
+            cbEquipment.isEnabled = false
+            btAddExpense.visibility = View.INVISIBLE
+        }
         etAddedOn.setText(DateHelper.toSimpleString())
 
         fun setCategoryAdapter(categories: List<String>) {
@@ -72,7 +79,7 @@ class ExpenseDetailsFragment : BaseFragment() {
         }
 
         var memberNames: Array<String> = arrayOf()
-        var fromId = sharedPreference.getUserId()
+        var fromId = ""
 
         membersViewModel.members.observe(viewLifecycleOwner) {
             memberNames = arrayOf()
@@ -93,6 +100,9 @@ class ExpenseDetailsFragment : BaseFragment() {
         }
 
         btAddExpense.setOnClickListener {
+            if(expenseId.isEmpty()){
+                expense = Expense()
+            }
             expense.id = expenseId.ifEmpty { RandomHelper.randomUUID() }
             expense.category = sdCategory.text.toString()
             expense.description = etDesc.text.toString()
@@ -103,25 +113,9 @@ class ExpenseDetailsFragment : BaseFragment() {
             expense.settled = cbSettleUp.isChecked
 
             if(sportId.isNotEmpty()) {
-                if (expenseId.isNotEmpty()) {
-                    sport.expenses.forEach {
-                        if (it.id == expenseId) {
-                            it.settled = expense.settled
-                        }
-                    }
-                } else {
-                    sport.expenses = sport.expenses.plus(expense)
-                }
+                sport.expenses[expense.id] = expense
             } else {
-                if (expenseId.isNotEmpty()) {
-                    event.expenses.forEach {
-                        if (it.id == expenseId) {
-                            it.settled = expense.settled
-                        }
-                    }
-                } else {
-                    event.expenses = event.expenses.plus(expense)
-                }
+                event.expenses[expense.id] = expense
             }
 
             if(cbEquipment.isChecked){
@@ -133,7 +127,7 @@ class ExpenseDetailsFragment : BaseFragment() {
                 equipment.quantity = expense.quantity
                 equipment.updatedOn = etAddedOn.text.toString()
                 if(sportId.isNotEmpty()) {
-                    sport.equipments = sport.equipments.plus(equipment)
+                    sport.equipments[equipment.id] = equipment
                 }
             }
 
@@ -146,17 +140,8 @@ class ExpenseDetailsFragment : BaseFragment() {
         }
 
         fun setExpenseDetails() {
-            sdCategory.isEnabled = false
-            etDesc.isEnabled = false
-            etPrice.isEnabled = false
-            etQuantity.isEnabled = false
-            etFrom.isEnabled = false
-            etAddedOn.isEnabled = false
             cbSettleUp.isChecked = expense.settled
-            cbSettleUp.isEnabled = !expense.settled
             cbSettleUp.text = if(expense.settled) getString(R.string.prompt_expense_settled) else getString(R.string.prompt_expense_settle_up)
-            btAddExpense.visibility = if(expense.settled) View.INVISIBLE else View.VISIBLE
-
             sdCategory.setText(expense.category, false)
             etDesc.setText(expense.description)
             etPrice.setText(expense.price.toString())

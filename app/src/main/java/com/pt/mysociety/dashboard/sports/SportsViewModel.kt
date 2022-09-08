@@ -19,6 +19,7 @@ class SportsViewModel constructor(private val database: DatabaseReference = Fire
     val fund = MutableLiveData<Fund>()
     var isLoading = MutableLiveData<Boolean>()
     var isDataExist = MutableLiveData<Boolean>()
+    var isDeleted = MutableLiveData<Boolean>()
 
     private val childEventListener: ChildEventListener = object : ChildEventListener {
         override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
@@ -78,9 +79,7 @@ class SportsViewModel constructor(private val database: DatabaseReference = Fire
         isLoading.value = true
         database.child(sportId).get().addOnSuccessListener { sport ->
             this.sport.value = sport.getValue(Sport::class.java)
-            val expense: Expense? = this.sport.value?.expenses?.find { inventory ->
-                inventory.id == expenseId
-            }
+            val expense: Expense? = this.sport.value?.expenses?.get(expenseId)
             if (expense != null) {
                 this.expense.value = expense
             }
@@ -92,13 +91,24 @@ class SportsViewModel constructor(private val database: DatabaseReference = Fire
         isLoading.value = true
         database.child(sportId).get().addOnSuccessListener { sport ->
             this.sport.value = sport.getValue(Sport::class.java)
-            val fund: Fund? = this.sport.value?.funds?.find { fund ->
-                fund.id == fundId
-            }
+            val fund: Fund? = this.sport.value?.funds?.get(fundId)
             if (fund != null) {
                 this.fund.value = fund
             }
             isLoading.value = false
+        }
+    }
+
+    fun deleteFund(sportId: String, fundId: String) {
+        isDeleted.value = false
+        database.child(sportId).get().addOnSuccessListener { _sport ->
+            val sport = _sport.getValue(Sport::class.java)
+            if(sport != null){
+                sport.funds.remove(fundId)
+                database.child(sportId).setValue(sport).addOnCompleteListener{
+                    isDeleted.value = true
+                }
+            }
         }
     }
 }

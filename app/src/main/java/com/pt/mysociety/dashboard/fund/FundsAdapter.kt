@@ -14,7 +14,7 @@ import com.pt.mysociety.databinding.AdapterItemBinding
 import java.util.*
 import kotlin.collections.ArrayList
 
-class SportFundsAdapter: RecyclerView.Adapter<SportFundViewHolder>(), Filterable {
+class FundsAdapter: RecyclerView.Adapter<SportFundViewHolder>(), Filterable {
 
     var fundsFilterList = ArrayList<Fund>()
     private var funds = mutableListOf<Fund>()
@@ -26,7 +26,7 @@ class SportFundsAdapter: RecyclerView.Adapter<SportFundViewHolder>(), Filterable
 
     fun setSportFunds(funds: List<Fund>) {
         this.funds = funds.toMutableList()
-        this.fundsFilterList = funds as ArrayList<Fund>
+        this.fundsFilterList = this.funds as ArrayList<Fund>
         notifyItemRangeInserted(0, this.funds.size)
     }
 
@@ -64,6 +64,7 @@ class SportFundsAdapter: RecyclerView.Adapter<SportFundViewHolder>(), Filterable
                     for (row in funds) {
                         if (row.from.lowercase(Locale.ROOT)
                                 .contains(constraint.toString().lowercase(Locale.ROOT))
+                            || "${row.amount}".contains(constraint.toString())
                         ) {
                             resultList.add(row)
                         }

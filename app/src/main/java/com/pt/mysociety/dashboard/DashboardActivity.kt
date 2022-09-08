@@ -95,7 +95,6 @@ class DashboardActivity : BaseActivity() {
             binding.appBarMain.fab.visibility = View.VISIBLE
         } else {
             binding.appBarMain.fab.visibility = View.INVISIBLE
-            binding.appBarMain.toolbar.menu.findItem(R.id.action_search).isVisible = false
         }
     }
 }

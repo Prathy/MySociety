@@ -99,6 +99,7 @@ class InAppUpdate(activity: Activity) : InstallStateUpdatedListener {
             if (resultCode != AppCompatActivity.RESULT_OK) {
                 // If the update is cancelled or fails, you can request to start the update again.
                 Log.e("ERROR", "Update flow failed! Result code: $resultCode")
+                Log.e("ERROR", "Update flow failed! Result data: $data")
             }
         }
     }

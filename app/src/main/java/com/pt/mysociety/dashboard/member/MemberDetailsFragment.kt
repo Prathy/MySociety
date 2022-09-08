@@ -20,6 +20,7 @@ class MemberDetailsFragment : BaseFragment() {
 
     private var _binding: FragmentMemberDetailsBinding? = null
     private val binding get() = _binding!!
+    private lateinit var member: User
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +40,15 @@ class MemberDetailsFragment : BaseFragment() {
         val btUpdateMember = binding.updateMember
 
         val memberId: String? = arguments?.get("memberId") as String?
-        btUpdateMember.visibility = if(UserHelper.isAdmin(requireContext())) View.VISIBLE else View.INVISIBLE
+        if(!UserHelper.isAdmin(requireContext())) {
+            etName.isEnabled = false
+            etWing.isEnabled = false
+            etFloor.isEnabled = false
+            etHouse.isEnabled = false
+            etEmail.isEnabled = false
+            etContact.isEnabled = false
+            btUpdateMember.visibility = View.INVISIBLE
+        }
 
         val societyHelper = SocietyHelper()
         val wingAdapter = ArrayAdapter(
@@ -60,22 +69,10 @@ class MemberDetailsFragment : BaseFragment() {
             setHouseAdapter(wingAdapter.getItem(position)!!)
         }
 
-        membersViewModel.members.observe(viewLifecycleOwner) {
-            it.forEach { member ->
-                if(member.id == memberId){
-                    etName.setText(member.name.toString())
-                    etWing.setText(member.wing.toString(), false)
-                    etFloor.setText(member.floor.toString(), false)
-                    etHouse.setText(member.house.toString(), false)
-                    etEmail.setText(member.email.toString())
-                    etContact.setText(member.contact.toString())
-                    setHouseAdapter(member.wing.toString())
-                }
-            }
-        }
-
         btUpdateMember.setOnClickListener {
-            val member = User()
+            if(memberId.isNullOrEmpty()){
+                member = User()
+            }
             member.id = memberId ?: RandomHelper.randomUUID()
             member.name = etName.text.toString()
             member.wing = etWing.text.toString()
@@ -86,6 +83,21 @@ class MemberDetailsFragment : BaseFragment() {
 
             membersViewModel.save(member)
             findNavController().popBackStack()
+        }
+
+        membersViewModel.members.observe(viewLifecycleOwner) {
+            it.forEach { _member ->
+                if(_member.id == memberId) {
+                    member = _member
+                    etName.setText(member.name.toString())
+                    etWing.setText(member.wing.toString(), false)
+                    etFloor.setText(member.floor.toString(), false)
+                    etHouse.setText(member.house.toString(), false)
+                    etEmail.setText(member.email.toString())
+                    etContact.setText(member.contact.toString())
+                    setHouseAdapter(member.wing.toString())
+                }
+            }
         }
 
         return root

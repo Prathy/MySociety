@@ -6,9 +6,8 @@
     <string name="action_logout">Logout</string>
     <string name="action_search">Search</string>
     <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
     <string name="action_create">Create</string>
-    <string name="action_add">Add</string>
-    <string name="action_update">Update</string>
 
     <!-- Strings related to drawer header -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -95,6 +94,6 @@
     <!-- Strings related to members -->
     <string name="nav_members">Members</string>
     <string name="nav_members_details">Member Details</string>
-    <string name="label_member_house">%s(%s)</string>
+    <string name="label_member_house">%s - %s</string>
 
 </resources>

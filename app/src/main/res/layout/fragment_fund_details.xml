@@ -52,12 +52,21 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/addFund"
+        android:id="@+id/deleteFund"
         style="@style/Actions.Button"
-        android:text="@string/action_add"
+        android:text="@string/action_delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contributed_on_container" />
+
+    <Button
+        android:id="@+id/addFund"
+        style="@style/Actions.Button"
+        android:text="@string/action_save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/deleteFund" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

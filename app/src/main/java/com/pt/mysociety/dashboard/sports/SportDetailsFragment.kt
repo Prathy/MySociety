@@ -34,7 +34,7 @@ class SportDetailsFragment : Fragment() {
         val root: View = binding.root
         val etName: EditText = binding.name
         val etTag: EditText = binding.tag
-        val btCreateSport = binding.createSport
+        val btnSave = binding.save
         val llActions = binding.actions
         val btnExpenses = binding.expenses
         val btnFunds = binding.funds
@@ -44,29 +44,20 @@ class SportDetailsFragment : Fragment() {
         val tvBalance = binding.balance
 
         val sportId = (arguments?.get("sportId") ?: "") as String
-        sportsViewModel.getSport(sportId)
-        if(sportId.isNotEmpty()) {
-            etName.isEnabled = false
-            btCreateSport.text = getString(R.string.action_save)
-            llActions.visibility = View.VISIBLE
-        } else {
-            etName.isEnabled = true
-            btCreateSport.text = getString(R.string.action_create)
-            llActions.visibility = View.INVISIBLE
-        }
-        etTag.isEnabled = UserHelper.isAdmin(requireContext())
-        btCreateSport.visibility = if(UserHelper.isAdmin(requireContext())) View.VISIBLE else View.INVISIBLE
 
-        btCreateSport.setOnClickListener {
+        if(!UserHelper.isAdmin(requireContext())) {
+            etName.isEnabled = false
+            etTag.isEnabled = false
+            btnSave.visibility = View.INVISIBLE
+        }
+        llActions.visibility = if(sportId.isEmpty()) View.INVISIBLE else View.VISIBLE
+
+        btnSave.setOnClickListener {
             sport = sportsViewModel.sport.value ?: Sport()
-            if(sportId.isNotEmpty()){
-                sport.tag = etTag.text.toString()
-            } else {
-                sport.name = etName.text.toString()
-                sport.ownerId = SharedPreference(this.requireContext()).getUserId()
-                sport.createdOn = DateHelper.toSimpleString()
-                sport.tag = etTag.text.toString()
-            }
+            sport.name = etName.text.toString()
+            sport.ownerId = SharedPreference(this.requireContext()).getUserId()
+            sport.createdOn = DateHelper.toSimpleString()
+            sport.tag = etTag.text.toString()
 
             sportsViewModel.save(sport)
             findNavController().popBackStack()
@@ -93,6 +84,7 @@ class SportDetailsFragment : Fragment() {
             )
         }
 
+        sportsViewModel.getSport(sportId)
         sportsViewModel.sport.observe(viewLifecycleOwner) {
             if(it !== null) {
                 etName.setText(it.name)
@@ -100,14 +92,14 @@ class SportDetailsFragment : Fragment() {
 
                 var totalFunds = 0
                 it.funds.forEach { fund ->
-                    totalFunds += fund.amount
+                    totalFunds += fund.value.amount
                 }
                 tvTotalFunds.text =
                     getString(R.string.info_total_funds, CurrencyHelper.convertToRupees(totalFunds))
 
                 var totalExpenses = 0
                 it.expenses.forEach { item ->
-                    totalExpenses += (item.price * item.quantity)
+                    totalExpenses += (item.value.price * item.value.quantity)
                 }
                 tvTotalExpenses.text = getString(
                     R.string.info_total_expenses,

@@ -45,16 +45,14 @@ class EventDetailsFragment : Fragment() {
         val btCreateEvent = binding.createEvent
 
         val eventId: String = (arguments?.get("eventId") ?: "") as String
-        eventsViewModel.getEvent(eventId)
-        if(eventId.isEmpty()) {
-            btCreateEvent.text = getString(R.string.action_create)
-            llActions.visibility = View.INVISIBLE
-        } else {
-            btCreateEvent.text = getString(R.string.action_save)
-            llActions.visibility = View.VISIBLE
+        if(!UserHelper.isAdmin(requireContext())) {
+            etName.isEnabled = false
+            etTag.isEnabled = false
+            etDate.isEnabled = false
+            etMinContribution.isEnabled = false
+            btCreateEvent.visibility = View.INVISIBLE
         }
-        etTag.isEnabled = UserHelper.isAdmin(requireContext())
-        btCreateEvent.visibility = if(UserHelper.isAdmin(requireContext())) View.VISIBLE else View.INVISIBLE
+        llActions.visibility = if(eventId.isEmpty()) View.INVISIBLE else View.VISIBLE
 
         btCreateEvent.setOnClickListener {
             event = eventsViewModel.event.value ?: Event()
@@ -64,6 +62,7 @@ class EventDetailsFragment : Fragment() {
             event.eventDate = etDate.text.toString()
             event.ownerId = SharedPreference(this.requireContext()).getUserId()
             event.createdOn = DateHelper.toSimpleString()
+
             eventsViewModel.save(event)
             findNavController().popBackStack()
         }
@@ -82,12 +81,9 @@ class EventDetailsFragment : Fragment() {
             )
         }
 
+        eventsViewModel.getEvent(eventId)
         eventsViewModel.event.observe(viewLifecycleOwner) {
             if(it !== null) {
-                etName.isEnabled = false
-                etMinContribution.isEnabled = false
-                etDate.isEnabled = false
-
                 etName.setText(it.name)
                 etTag.setText(it.tag)
                 etMinContribution.setText(it.minContribution.toString())
@@ -95,14 +91,14 @@ class EventDetailsFragment : Fragment() {
 
                 var totalFunds = 0
                 it.funds.forEach { fund ->
-                    totalFunds += fund.amount
+                    totalFunds += fund.value.amount
                 }
                 tvTotalFunds.text =
                     getString(R.string.info_total_funds, CurrencyHelper.convertToRupees(totalFunds))
 
                 var totalExpenses = 0
                 it.expenses.forEach { item ->
-                    totalExpenses += (item.price * item.quantity)
+                    totalExpenses += (item.value.price * item.value.quantity)
                 }
                 tvTotalExpenses.text = getString(
                     R.string.info_total_expenses,

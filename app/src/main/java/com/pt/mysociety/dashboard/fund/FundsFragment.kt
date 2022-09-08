@@ -2,11 +2,7 @@ package com.pt.mysociety.dashboard.fund
 
 import android.os.Bundle
 import android.view.*
-import android.widget.SearchView
 import androidx.core.os.bundleOf
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +20,7 @@ class FundsFragment : FilterFragment(), AdapterItemEventListener, FabClickListen
     private val binding get() = _binding!!
     private lateinit var sportsViewModel: SportsViewModel
     private lateinit var eventsViewModel: EventsViewModel
-    private val adapter = SportFundsAdapter()
+    private val adapter = FundsAdapter()
     private lateinit var sportId: String
     private lateinit var eventId: String
 
@@ -61,11 +57,11 @@ class FundsFragment : FilterFragment(), AdapterItemEventListener, FabClickListen
         }
 
         sportsViewModel.sport.observe(viewLifecycleOwner) {
-            setFunds(it.funds)
+            setFunds(it.funds.values.toList())
         }
 
         eventsViewModel.event.observe(viewLifecycleOwner) {
-            setFunds(it.funds)
+            setFunds(it.funds.values.toList())
         }
 
         val loading = binding.loading

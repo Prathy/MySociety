@@ -42,7 +42,7 @@ class SportEquipmentsFragment : Fragment(), FabClickListener {
         rvEquipments.itemAnimator = null
         rvEquipments.adapter = adapter
         sportsViewModel.sport.observe(viewLifecycleOwner) {
-            adapter.setSportEquipments(it.equipments)
+            adapter.setSportEquipments(it.equipments.values.toList())
         }
 
         sportsViewModel.sport.observe(viewLifecycleOwner) {
@@ -52,26 +52,26 @@ class SportEquipmentsFragment : Fragment(), FabClickListener {
                 var totalBats = 0
                 var totalBalls = 0
                 it.equipments.forEach { equipment ->
-                    when(equipment.status) {
+                    when(equipment.value.status) {
                         EquipmentStatus.Available.name -> {
-                            when (equipment.category) {
+                            when (equipment.value.category) {
                                 "Bat" -> {
-                                    totalBats += equipment.quantity
-                                    availableBats += equipment.quantity
+                                    totalBats += equipment.value.quantity
+                                    availableBats += equipment.value.quantity
                                 }
                                 "Ball" -> {
-                                    totalBalls += equipment.quantity
-                                    availableBalls += equipment.quantity
+                                    totalBalls += equipment.value.quantity
+                                    availableBalls += equipment.value.quantity
                                 }
                             }
                         }
                         EquipmentStatus.UnAvailable.name -> {
-                            when (equipment.category) {
+                            when (equipment.value.category) {
                                 "Bat" -> {
-                                    availableBats -= equipment.quantity
+                                    availableBats -= equipment.value.quantity
                                 }
                                 "Ball" -> {
-                                    availableBalls -= equipment.quantity
+                                    availableBalls -= equipment.value.quantity
                                 }
                             }
                         }

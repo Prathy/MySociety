@@ -88,7 +88,7 @@
     <Button
         android:id="@+id/updateEquipment"
         style="@style/Actions.Button"
-        android:text="@string/action_update"
+        android:text="@string/action_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

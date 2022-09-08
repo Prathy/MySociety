@@ -45,21 +45,29 @@ class FundDetailsFragment : BaseFragment() {
         val etAmount: EditText = binding.amount
         val etContributedOn: EditText = binding.contributedOn
         val btAddFund = binding.addFund
+        val btDeleteFund = binding.deleteFund
 
         val sportId = (arguments?.get("sportId") ?: "") as String
         val eventId = (arguments?.get("eventId") ?: "") as String
         val fundId: String = (arguments?.get("fundId") ?: "") as String
 
-        btAddFund.visibility = if(fundId.isNotEmpty()) View.INVISIBLE else View.VISIBLE
+        btDeleteFund.visibility = if(fundId.isEmpty()) View.INVISIBLE else View.VISIBLE
+        if(!UserHelper.isAdmin(requireContext())) {
+            etFrom.isEnabled = false
+            etAmount.isEnabled = false
+            etContributedOn.isEnabled = false
+            btAddFund.visibility = View.INVISIBLE
+            btDeleteFund.visibility = View.INVISIBLE
+        }
         etContributedOn.setText(DateHelper.toSimpleString())
 
         var memberNames: Array<String> = arrayOf()
-        var fromId = sharedPreference.getUserId()
+        var fromId = ""
 
         membersViewModel.members.observe(viewLifecycleOwner) {
             memberNames = arrayOf()
             it.forEach { member ->
-                memberNames = memberNames.plus(getString(R.string.label_member_house, member.name, UserHelper.getHouse(member)))
+                memberNames = memberNames.plus(getString(R.string.label_member_house, UserHelper.getHouse(member), member.name))
             }
             val membersAdapter = ArrayAdapter(
                 requireContext(),
@@ -75,45 +83,63 @@ class FundDetailsFragment : BaseFragment() {
         }
 
         btAddFund.setOnClickListener {
-            val fund = Fund()
-            fund.id = RandomHelper.randomUUID()
+            if(fundId.isEmpty()) {
+                fund = Fund()
+            }
+
+            fund.id = fundId.ifEmpty {RandomHelper.randomUUID()}
             fund.from = fromId
             fund.amount = etAmount.text.toString().toInt()
             fund.contributedOn = etContributedOn.text.toString()
 
             if(sportId.isNotEmpty()) {
-                sport.funds = sport.funds.plus(fund)
+                sport.funds[fund.id] = fund
                 sportsViewModel.save(sport)
             } else {
-                event.funds = event.funds.plus(fund)
+                event.funds[fund.id] = fund
                 eventsViewModel.save(event)
             }
 
             findNavController().popBackStack()
         }
 
-        fun setFundDetails() {
-            etFrom.isEnabled = false
-            etAmount.isEnabled = false
-            etContributedOn.isEnabled = false
-            btAddFund.visibility = View.INVISIBLE
+        eventsViewModel.isDeleted.observe(viewLifecycleOwner) {
+            if(eventsViewModel.isDeleted.value == true) {
+                findNavController().popBackStack()
+            }
+        }
 
+        sportsViewModel.isDeleted.observe(viewLifecycleOwner) {
+            if(sportsViewModel.isDeleted.value == true) {
+                findNavController().popBackStack()
+            }
+        }
+
+        btDeleteFund.setOnClickListener {
+            if(sportId.isNotEmpty()) {
+                sportsViewModel.deleteFund(sportId, fundId)
+            } else {
+                eventsViewModel.deleteFund(eventId, fundId)
+            }
+        }
+
+        fun setFundDetails() {
             val member = members.find { member ->
                 member.id == fund.from
             } ?: User()
 
             fund.from = member.name + "(" + UserHelper.getHouse(member) + ")"
+            fromId = member.id
 
             etFrom.setText(fund.from)
             etAmount.setText(fund.amount.toString())
             etContributedOn.setText(fund.contributedOn)
         }
 
-        if(fundId.isNotEmpty()) {
+        if(sportId.isNotEmpty()) {
             sportsViewModel.getSport(sportId)
             sportsViewModel.getSportFund(sportId, fundId)
         }
-
         sportsViewModel.sport.observe(viewLifecycleOwner) {
             sport = it
             etAmount.setText(getString(R.string.minimum_fund_amount))

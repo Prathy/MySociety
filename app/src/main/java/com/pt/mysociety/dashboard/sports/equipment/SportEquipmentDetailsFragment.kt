@@ -67,7 +67,7 @@ class SportEquipmentDetailsFragment : Fragment() {
             equipment.quantity = etQuantity.text.toString().toInt()
             equipment.status = sdStatus.text.toString()
             equipment.updatedOn = etUpdatedOn.text.toString()
-            sport.equipments = sport.equipments.plus(equipment)
+            sport.equipments[equipment.id] = equipment
 
             sportsViewModel.save(sport)
             findNavController().popBackStack()

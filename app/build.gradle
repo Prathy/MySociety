@@ -11,8 +11,8 @@ android {
         applicationId "com.pt.mysociety"
         minSdk 21
         targetSdk 32
-        versionCode 6
-        versionName "1.4"
+        versionCode 13
+        versionName "1.9"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -57,6 +57,7 @@ dependencies {
     implementation 'androidx.arch.core:core-runtime:2.1.0'
     implementation 'com.google.android.play:app-update:2.0.0'
     implementation 'com.google.android.play:app-update-ktx:2.0.0'
+    implementation 'com.google.android.play:integrity:1.0.1'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

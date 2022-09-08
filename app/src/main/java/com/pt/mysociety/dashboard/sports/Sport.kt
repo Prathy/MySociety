@@ -10,9 +10,9 @@ data class Sport(
     var ownerId: String = "",
     var name: String = "",
     var createdOn: String? = null,
-    var expenses: List<Expense> = arrayListOf(),
-    var funds: List<Fund> = arrayListOf(),
-    var equipments: List<Equipment> = arrayListOf(),
+    var expenses: HashMap<String, Expense> = HashMap(),
+    var funds: HashMap<String, Fund> = HashMap(),
+    var equipments: HashMap<String, Equipment> = HashMap(),
     var tag: String = "",
     var expenseCategories: List<String> = arrayListOf(),
     var equipmentCategories: List<String> = arrayListOf()
