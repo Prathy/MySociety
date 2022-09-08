@@ -44,20 +44,20 @@ class FundDetailsFragment : BaseFragment() {
         val etFrom: AutoCompleteTextView = binding.from
         val etAmount: EditText = binding.amount
         val etContributedOn: EditText = binding.contributedOn
-        val btAddFund = binding.addFund
+        val btSaveFund = binding.saveFund
         val btDeleteFund = binding.deleteFund
 
         val sportId = (arguments?.get("sportId") ?: "") as String
         val eventId = (arguments?.get("eventId") ?: "") as String
         val fundId: String = (arguments?.get("fundId") ?: "") as String
 
-        btDeleteFund.visibility = if(fundId.isEmpty()) View.INVISIBLE else View.VISIBLE
+        btDeleteFund.visibility = if(fundId.isEmpty()) View.GONE else View.VISIBLE
         if(!UserHelper.isAdmin(requireContext())) {
             etFrom.isEnabled = false
             etAmount.isEnabled = false
             etContributedOn.isEnabled = false
-            btAddFund.visibility = View.INVISIBLE
-            btDeleteFund.visibility = View.INVISIBLE
+            btSaveFund.visibility = View.INVISIBLE
+            btDeleteFund.visibility = View.GONE
         }
         etContributedOn.setText(DateHelper.toSimpleString())
 
@@ -82,7 +82,7 @@ class FundDetailsFragment : BaseFragment() {
             fromId = members[adapterPos].id
         }
 
-        btAddFund.setOnClickListener {
+        btSaveFund.setOnClickListener {
             if(fundId.isEmpty()) {
                 fund = Fund()
             }

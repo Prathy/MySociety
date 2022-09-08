@@ -111,4 +111,17 @@ class SportsViewModel constructor(private val database: DatabaseReference = Fire
             }
         }
     }
+
+    fun deleteExpense(sportId: String, expenseId: String) {
+        isDeleted.value = false
+        database.child(sportId).get().addOnSuccessListener { _sport ->
+            val sport = _sport.getValue(Sport::class.java)
+            if(sport != null){
+                sport.expenses.remove(expenseId)
+                database.child(sportId).setValue(sport).addOnCompleteListener{
+                    isDeleted.value = true
+                }
+            }
+        }
+    }
 }

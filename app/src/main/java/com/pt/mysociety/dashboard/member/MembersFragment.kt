@@ -46,6 +46,8 @@ class MembersFragment : FilterFragment(), AdapterItemEventListener, FabClickList
             tvMessage.visibility = if(it) View.GONE else View.VISIBLE
         }
 
+
+
         return root
     }
 

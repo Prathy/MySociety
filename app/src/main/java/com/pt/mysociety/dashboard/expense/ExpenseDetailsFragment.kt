@@ -50,12 +50,14 @@ class ExpenseDetailsFragment : BaseFragment() {
         val etAddedOn: EditText = binding.addedOn
         val cbEquipment = binding.cbEquipment
         val cbSettleUp = binding.cbSettleUp
-        val btAddExpense = binding.addExpense
+        val btSaveExpense = binding.saveExpense
+        val btDeleteExpense = binding.deleteExpense
 
         val sportId = (arguments?.get("sportId") ?: "") as String
         val eventId = (arguments?.get("eventId") ?: "") as String
         val expenseId: String = (arguments?.get("expenseId") ?: "") as String
 
+        btDeleteExpense.visibility = if(expenseId.isEmpty()) View.GONE else View.VISIBLE
         if(!UserHelper.isAdmin(requireContext())) {
             sdCategory.isEnabled = false
             etDesc.isEnabled = false
@@ -65,7 +67,8 @@ class ExpenseDetailsFragment : BaseFragment() {
             etAddedOn.isEnabled = false
             cbSettleUp.isEnabled = false
             cbEquipment.isEnabled = false
-            btAddExpense.visibility = View.INVISIBLE
+            btSaveExpense.visibility = View.INVISIBLE
+            btDeleteExpense.visibility = View.GONE
         }
         etAddedOn.setText(DateHelper.toSimpleString())
 
@@ -99,7 +102,7 @@ class ExpenseDetailsFragment : BaseFragment() {
             fromId = members[adapterPos].id
         }
 
-        btAddExpense.setOnClickListener {
+        btSaveExpense.setOnClickListener {
             if(expenseId.isEmpty()){
                 expense = Expense()
             }
@@ -137,6 +140,26 @@ class ExpenseDetailsFragment : BaseFragment() {
                 eventsViewModel.save(event)
             }
             findNavController().popBackStack()
+        }
+
+        eventsViewModel.isDeleted.observe(viewLifecycleOwner) {
+            if(eventsViewModel.isDeleted.value == true) {
+                findNavController().popBackStack()
+            }
+        }
+
+        sportsViewModel.isDeleted.observe(viewLifecycleOwner) {
+            if(sportsViewModel.isDeleted.value == true) {
+                findNavController().popBackStack()
+            }
+        }
+
+        btDeleteExpense.setOnClickListener {
+            if(sportId.isNotEmpty()) {
+                sportsViewModel.deleteExpense(sportId, expenseId)
+            } else {
+                eventsViewModel.deleteExpense(eventId, expenseId)
+            }
         }
 
         fun setExpenseDetails() {

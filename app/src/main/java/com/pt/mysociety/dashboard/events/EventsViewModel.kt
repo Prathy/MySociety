@@ -10,6 +10,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.pt.mysociety.dashboard.expense.Expense
 import com.pt.mysociety.dashboard.fund.Fund
+import com.pt.mysociety.dashboard.sports.Sport
 
 class EventsViewModel constructor(private val database: DatabaseReference = Firebase.database.reference.child("events")) : ViewModel() {
 
@@ -105,6 +106,19 @@ class EventsViewModel constructor(private val database: DatabaseReference = Fire
             val event = _event.getValue(Event::class.java)
             if(event != null){
                 event.funds.remove(fundId)
+                database.child(eventId).setValue(event).addOnCompleteListener{
+                    isDeleted.value = true
+                }
+            }
+        }
+    }
+
+    fun deleteExpense(eventId: String, expenseId: String) {
+        isDeleted.value = false
+        database.child(eventId).get().addOnSuccessListener { _event ->
+            val event = _event.getValue(Event::class.java)
+            if(event != null){
+                event.expenses.remove(expenseId)
                 database.child(eventId).setValue(event).addOnCompleteListener{
                     isDeleted.value = true
                 }

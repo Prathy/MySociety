@@ -63,17 +63,30 @@
             android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/updateMember"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_gravity="start"
-        android:layout_marginTop="16dp"
-        android:enabled="true"
-        android:text="@string/action_save"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_house_container" />
+        app:layout_constraintTop_toBottomOf="@+id/add_house_container">
+
+        <Button
+            android:id="@+id/deleteMember"
+            style="@style/Actions.Button.Delete"
+            android:text="@string/action_delete"
+            android:visibility="gone"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp" />
+
+        <Button
+            android:id="@+id/saveMember"
+            style="@style/Actions.Button"
+            android:text="@string/action_save"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

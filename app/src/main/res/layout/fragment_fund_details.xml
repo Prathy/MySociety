@@ -51,22 +51,31 @@
             android:importantForAutofill="no" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/deleteFund"
-        style="@style/Actions.Button"
-        android:text="@string/action_delete"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contributed_on_container" />
+        app:layout_constraintTop_toBottomOf="@+id/contributed_on_container">
 
-    <Button
-        android:id="@+id/addFund"
-        style="@style/Actions.Button"
-        android:text="@string/action_save"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deleteFund" />
+        <Button
+            android:id="@+id/deleteFund"
+            style="@style/Actions.Button.Delete"
+            android:text="@string/action_delete"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:layout_marginEnd="5dp" />
+
+        <Button
+            android:id="@+id/saveFund"
+            style="@style/Actions.Button"
+            android:text="@string/action_save"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp" />
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

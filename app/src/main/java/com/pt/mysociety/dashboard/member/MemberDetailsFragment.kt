@@ -37,9 +37,12 @@ class MemberDetailsFragment : BaseFragment() {
         val etHouse: AutoCompleteTextView = binding.addHouseContainer.house
         val etEmail: EditText = binding.email
         val etContact: EditText = binding.contact
-        val btUpdateMember = binding.updateMember
+        val btSaveMember = binding.saveMember
+        val btDeleteMember = binding.deleteMember
 
-        val memberId: String? = arguments?.get("memberId") as String?
+        val memberId: String = (arguments?.get("memberId") ?: "") as String
+
+        btDeleteMember.visibility = if(memberId.isEmpty()) View.GONE else View.VISIBLE
         if(!UserHelper.isAdmin(requireContext())) {
             etName.isEnabled = false
             etWing.isEnabled = false
@@ -47,7 +50,8 @@ class MemberDetailsFragment : BaseFragment() {
             etHouse.isEnabled = false
             etEmail.isEnabled = false
             etContact.isEnabled = false
-            btUpdateMember.visibility = View.INVISIBLE
+            btSaveMember.visibility = View.INVISIBLE
+            btDeleteMember.visibility = View.GONE
         }
 
         val societyHelper = SocietyHelper()
@@ -69,11 +73,12 @@ class MemberDetailsFragment : BaseFragment() {
             setHouseAdapter(wingAdapter.getItem(position)!!)
         }
 
-        btUpdateMember.setOnClickListener {
-            if(memberId.isNullOrEmpty()){
+        btSaveMember.setOnClickListener {
+            if(memberId.isEmpty()){
                 member = User()
+                member.id = RandomHelper.randomUUID()
             }
-            member.id = memberId ?: RandomHelper.randomUUID()
+
             member.name = etName.text.toString()
             member.wing = etWing.text.toString()
             member.floor = etFloor.text.toString().toInt()
@@ -83,6 +88,16 @@ class MemberDetailsFragment : BaseFragment() {
 
             membersViewModel.save(member)
             findNavController().popBackStack()
+        }
+
+        membersViewModel.isDeleted.observe(viewLifecycleOwner) {
+            if(membersViewModel.isDeleted.value == true) {
+                findNavController().popBackStack()
+            }
+        }
+
+        btDeleteMember.setOnClickListener {
+            membersViewModel.deleteMember(memberId)
         }
 
         membersViewModel.members.observe(viewLifecycleOwner) {
