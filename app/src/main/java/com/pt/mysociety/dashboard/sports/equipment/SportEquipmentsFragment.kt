@@ -1,10 +1,13 @@
 package com.pt.mysociety.dashboard.sports.equipment
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -33,55 +36,65 @@ class SportEquipmentsFragment : Fragment(), FabClickListener {
         (activity as DashboardActivity).setFabClickListener(this)
 
         val root: View = binding.root
-        val tvBats: TextView = binding.bats
-        val tvBalls: TextView = binding.balls
+        val tvLabelEquipments = binding.labelEquipments
+        val llActions: LinearLayout = binding.actions
         val rvEquipments : RecyclerView = binding.rvItems
+        val loading = binding.loading
+        val tvMessage = binding.tvMessage
 
         sportId = arguments?.get("sportId") as String
 
         rvEquipments.itemAnimator = null
         rvEquipments.adapter = adapter
         sportsViewModel.sport.observe(viewLifecycleOwner) {
+            loading.visibility = View.INVISIBLE
+            if(it.equipments.values.toList().isEmpty()){
+                tvMessage.visibility = View.VISIBLE
+                llActions.visibility = View.GONE
+                tvLabelEquipments.visibility = View.INVISIBLE
+            } else {
+                tvMessage.visibility = View.INVISIBLE
+                llActions.visibility = View.VISIBLE
+                tvLabelEquipments.visibility = View.VISIBLE
+            }
+
             adapter.setSportEquipments(it.equipments.values.toList())
         }
 
         sportsViewModel.sport.observe(viewLifecycleOwner) {
             if(it !== null) {
-                var availableBats = 0
-                var availableBalls = 0
-                var totalBats = 0
-                var totalBalls = 0
+                val equipmentMap: HashMap<String, Int> = HashMap()
+                it.equipmentCategories.forEach { category ->
+                    equipmentMap["A-$category"] = 0
+                    equipmentMap["T-$category"] = 0
+                }
                 it.equipments.forEach { equipment ->
                     when(equipment.value.status) {
                         EquipmentStatus.Available.name -> {
-                            when (equipment.value.category) {
-                                "Bat" -> {
-                                    totalBats += equipment.value.quantity
-                                    availableBats += equipment.value.quantity
-                                }
-                                "Ball" -> {
-                                    totalBalls += equipment.value.quantity
-                                    availableBalls += equipment.value.quantity
-                                }
-                            }
+                            equipmentMap["T-${equipment.value.category}"] =
+                                (equipmentMap["T-${equipment.value.category}"] ?: 0) + equipment.value.quantity
+                            equipmentMap["A-${equipment.value.category}"] =
+                                (equipmentMap["A-${equipment.value.category}"] ?: 0) + equipment.value.quantity
                         }
                         EquipmentStatus.UnAvailable.name -> {
-                            when (equipment.value.category) {
-                                "Bat" -> {
-                                    availableBats -= equipment.value.quantity
-                                }
-                                "Ball" -> {
-                                    availableBalls -= equipment.value.quantity
-                                }
-                            }
+                            equipmentMap["A-${equipment.value.category}"] =
+                                (equipmentMap["A-${equipment.value.category}"] ?: 0) - equipment.value.quantity
                         }
                     }
                 }
-                tvBats.text = getString(R.string.info_bats, availableBats, totalBats)
-                tvBalls.text = getString(R.string.info_balls, availableBalls, totalBalls)
+
+                it.equipmentCategories.forEach { key ->
+                    val tvDynamic = TextView(requireContext())
+                    tvDynamic.textSize = 18f
+                    tvDynamic.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                    tvDynamic.typeface = Typeface.DEFAULT_BOLD
+                    tvDynamic.text = requireContext().getString(R.string.info_equipment_details, key, equipmentMap["A-$key"], equipmentMap["T-$key"])
+                    llActions.addView(tvDynamic)
+                }
             }
         }
 
+        loading.visibility = View.VISIBLE
         sportsViewModel.getSport(sportId)
 
         return root

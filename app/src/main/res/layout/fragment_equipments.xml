@@ -16,37 +16,18 @@
         app:layout_constraintTop_toTopOf="parent"
         android:padding="8dp"
         android:background="@color/black_overlay"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/bats"
-            android:layout_width="match_parent"
-            android:text="@string/info_bats"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/balls"
-            android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
-            android:text="@string/info_balls"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+        android:orientation="vertical"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/labelEquipments"
         android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
         android:text="@string/info_equipments"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:layout_marginTop="16dp"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/actions"/>
@@ -62,5 +43,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/labelEquipments"/>
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="64dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/rv_items"
+        app:layout_constraintStart_toStartOf="@+id/rv_items"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <TextView
+        android:id="@+id/tvMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="64dp"
+        android:visibility="gone"
+        android:text="@string/data_not_found"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/rv_items"
+        app:layout_constraintStart_toStartOf="@+id/rv_items"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

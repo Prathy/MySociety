@@ -52,8 +52,7 @@
     <string name="info_total_expenses">Total Expenses: %s</string>
     <string name="info_balance">Balance: %s</string>
     <string name="info_number">%d.</string>
-    <string name="info_bats">Bats: %d / %d</string>
-    <string name="info_balls">Balls: %d / %d</string>
+    <string name="info_equipment_details">%s: %d / %d</string>
     <string name="info_equipments">Equipments:</string>
     <string name="info_house">House: %s</string>
     <string name="action_update_funds">Funds</string>

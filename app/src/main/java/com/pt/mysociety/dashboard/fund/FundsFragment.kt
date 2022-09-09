@@ -40,6 +40,8 @@ class FundsFragment : FilterFragment(), AdapterItemEventListener, FabClickListen
         sportId = (arguments?.get("sportId") ?: "") as String
         eventId = (arguments?.get("eventId") ?: "") as String
 
+        val loading = binding.loading
+        val tvMessage = binding.tvMessage
         val rvSports : RecyclerView = binding.rvItems
         rvSports.itemAnimator = null
         rvSports.adapter = adapter
@@ -54,6 +56,8 @@ class FundsFragment : FilterFragment(), AdapterItemEventListener, FabClickListen
                 fund.from = member.name ?: ""
             }
             adapter.setSportFunds(funds)
+
+            tvMessage.visibility = if(funds.isNotEmpty()) View.GONE else View.VISIBLE
         }
 
         sportsViewModel.sport.observe(viewLifecycleOwner) {
@@ -64,7 +68,6 @@ class FundsFragment : FilterFragment(), AdapterItemEventListener, FabClickListen
             setFunds(it.funds.values.toList())
         }
 
-        val loading = binding.loading
         sportsViewModel.isLoading.observe(viewLifecycleOwner) {
             loading.visibility = if(it) View.VISIBLE else View.GONE
         }
@@ -72,7 +75,6 @@ class FundsFragment : FilterFragment(), AdapterItemEventListener, FabClickListen
             loading.visibility = if(it) View.VISIBLE else View.GONE
         }
 
-        val tvMessage = binding.tvMessage
         sportsViewModel.isDataExist.observe(viewLifecycleOwner) {
             loading.visibility = if(it) View.GONE else loading.visibility
             tvMessage.visibility = if(it) View.GONE else View.VISIBLE

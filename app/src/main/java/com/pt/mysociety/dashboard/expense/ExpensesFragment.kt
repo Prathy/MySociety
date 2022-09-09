@@ -65,18 +65,23 @@ class ExpensesFragment : Fragment(), AdapterItemEventListener, FabClickListener 
             tvMessage.visibility = if(it) View.GONE else View.VISIBLE
         }
 
+        fun setExpenses(expenses: List<Expense>) {
+            adapter.setSportExpenses(expenses)
+            tvMessage.visibility = if(expenses.isNotEmpty()) View.GONE else View.VISIBLE
+        }
+
         if(sportId.isNotEmpty()) {
             sportsViewModel.getSport(sportId)
         }
         sportsViewModel.sport.observe(viewLifecycleOwner) {
-            adapter.setSportExpenses(it.expenses.values.toList())
+            setExpenses(it.expenses.values.toList())
         }
 
         if(eventId.isNotEmpty()) {
             eventsViewModel.getEvent(eventId)
         }
         eventsViewModel.event.observe(viewLifecycleOwner) {
-            adapter.setSportExpenses(it.expenses.values.toList())
+            setExpenses(it.expenses.values.toList())
         }
 
         return root
