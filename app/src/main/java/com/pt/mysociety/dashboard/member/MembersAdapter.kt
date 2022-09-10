@@ -9,7 +9,7 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.pt.mysociety.R
 import com.pt.mysociety.dashboard.AdapterItemEventListener
-import com.pt.mysociety.data.UserHelper
+import com.pt.mysociety.helpers.UserHelper
 import com.pt.mysociety.databinding.AdapterItemBinding
 import com.pt.mysociety.login.model.User
 import java.util.*

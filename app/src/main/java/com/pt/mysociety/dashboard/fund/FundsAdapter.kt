@@ -9,7 +9,8 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.pt.mysociety.R
 import com.pt.mysociety.dashboard.AdapterItemEventListener
-import com.pt.mysociety.data.CurrencyHelper
+import com.pt.mysociety.helpers.CurrencyHelper
+import com.pt.mysociety.helpers.DateHelper
 import com.pt.mysociety.databinding.AdapterItemBinding
 import java.util.*
 import kotlin.collections.ArrayList
@@ -25,7 +26,9 @@ class FundsAdapter: RecyclerView.Adapter<SportFundViewHolder>(), Filterable {
     }
 
     fun setSportFunds(funds: List<Fund>) {
-        this.funds = funds.toMutableList()
+        this.funds = funds.sortedByDescending {
+            DateHelper.toDate(it.contributedOn)
+        }.toMutableList()
         this.fundsFilterList = this.funds as ArrayList<Fund>
         notifyItemRangeInserted(0, this.funds.size)
     }
@@ -43,6 +46,7 @@ class FundsAdapter: RecyclerView.Adapter<SportFundViewHolder>(), Filterable {
         holder.binding.no.text = holder.itemView.context.getString(R.string.info_number, position + 1)
         holder.binding.title.text = fund.from
         holder.binding.tag.text = holder.itemView.context.getString(R.string.item_contribution, CurrencyHelper.convertToRupees(fund.amount))
+        holder.binding.tag2.text = holder.itemView.context.getString(R.string.item_contributed_on, DateHelper.toNormalize(fund.contributedOn))
 
         holder.itemView.setOnClickListener {
             this.itemSportListener.onItemClick(fund)

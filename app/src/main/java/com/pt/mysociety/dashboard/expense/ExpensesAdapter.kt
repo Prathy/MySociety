@@ -6,7 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pt.mysociety.R
 import com.pt.mysociety.dashboard.AdapterItemEventListener
-import com.pt.mysociety.data.CurrencyHelper
+import com.pt.mysociety.helpers.CurrencyHelper
+import com.pt.mysociety.helpers.DateHelper
 import com.pt.mysociety.databinding.AdapterItemBinding
 
 class SportExpensesAdapter: RecyclerView.Adapter<SportExpenseViewHolder>()  {
@@ -18,7 +19,9 @@ class SportExpensesAdapter: RecyclerView.Adapter<SportExpenseViewHolder>()  {
     }
 
     fun setSportExpenses(expenses: List<Expense>) {
-        this.expenses = expenses.toMutableList()
+        this.expenses = expenses.sortedByDescending {
+            DateHelper.toDate(it.addedOn)
+        }.toMutableList()
         notifyItemRangeInserted(0, this.expenses.size)
     }
 
@@ -39,6 +42,7 @@ class SportExpensesAdapter: RecyclerView.Adapter<SportExpenseViewHolder>()  {
             expense.quantity,
             CurrencyHelper.convertToRupees(expense.price * expense.quantity)
         )
+        holder.binding.tag2.text = holder.itemView.context.getString(R.string.item_added_on, DateHelper.toNormalize(expense.addedOn))
 
         holder.itemView.setOnClickListener {
             this.itemSportListener.onItemClick(expense)

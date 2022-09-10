@@ -12,8 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.pt.mysociety.dashboard.DashboardActivity
 import com.pt.mysociety.dashboard.sports.*
-import com.pt.mysociety.data.DateHelper
-import com.pt.mysociety.data.RandomHelper
+import com.pt.mysociety.helpers.DateHelper
+import com.pt.mysociety.helpers.RandomHelper
 import com.pt.mysociety.databinding.FragmentEquipmentDetailsBinding
 
 class SportEquipmentDetailsFragment : Fragment() {

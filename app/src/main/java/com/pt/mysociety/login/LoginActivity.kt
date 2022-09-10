@@ -16,7 +16,7 @@ import com.google.firebase.ktx.Firebase
 import com.pt.mysociety.BaseActivity
 import com.pt.mysociety.InAppUpdate
 import com.pt.mysociety.dashboard.DashboardActivity
-import com.pt.mysociety.data.UserHelper
+import com.pt.mysociety.helpers.UserHelper
 import com.pt.mysociety.databinding.ActivityLoginBinding
 import com.pt.mysociety.login.model.User
 import com.pt.mysociety.login.view.LoginViewModel

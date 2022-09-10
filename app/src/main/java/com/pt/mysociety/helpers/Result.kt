@@ -1,4 +1,4 @@
-package com.pt.mysociety.data
+package com.pt.mysociety.helpers
 
 /**
  * A generic class that holds a value with its loading status.

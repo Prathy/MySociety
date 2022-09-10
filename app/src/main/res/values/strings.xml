@@ -69,12 +69,15 @@
     <string name="prompt_expense_equipment">Equipment</string>
     <string name="prompt_expense_settled">Settled</string>
     <string name="item_price">Price: %s * %d = %s</string>
+    <string name="item_added_on">Added on %s</string>
     <string name="item_contribution">Contribution: %s</string>
+    <string name="item_contributed_on">Contributed on %s</string>
     <string name="prompt_fund_from">From</string>
     <string name="prompt_fund_amount">Amount</string>
     <string name="prompt_fund_contributed_on">Contributed On</string>
     <string name="minimum_fund_amount">200</string>
     <string name="item_quantity">Quantity: %d</string>
+    <string name="item_status">%s on %s</string>
     <string name="prompt_equipment_category">Category</string>
     <string name="prompt_equipment_description">Description</string>
     <string name="prompt_equipment_quantity">Quantity</string>

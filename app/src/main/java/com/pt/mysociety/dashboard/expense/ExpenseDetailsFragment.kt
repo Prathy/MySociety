@@ -16,9 +16,9 @@ import com.pt.mysociety.dashboard.events.Event
 import com.pt.mysociety.dashboard.events.EventsViewModel
 import com.pt.mysociety.dashboard.events.EventsViewModelFactory
 import com.pt.mysociety.dashboard.sports.*
-import com.pt.mysociety.data.DateHelper
-import com.pt.mysociety.data.RandomHelper
-import com.pt.mysociety.data.UserHelper
+import com.pt.mysociety.helpers.DateHelper
+import com.pt.mysociety.helpers.RandomHelper
+import com.pt.mysociety.helpers.UserHelper
 import com.pt.mysociety.databinding.FragmentExpenseDetailsBinding
 import com.pt.mysociety.login.model.User
 

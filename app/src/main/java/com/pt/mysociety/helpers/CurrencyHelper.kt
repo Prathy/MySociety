@@ -1,4 +1,4 @@
-package com.pt.mysociety.data
+package com.pt.mysociety.helpers
 
 import java.text.NumberFormat
 import java.util.*

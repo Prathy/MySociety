@@ -12,9 +12,9 @@ import androidx.navigation.fragment.findNavController
 import com.pt.mysociety.R
 import com.pt.mysociety.SharedPreference
 import com.pt.mysociety.dashboard.DashboardActivity
-import com.pt.mysociety.data.CurrencyHelper
-import com.pt.mysociety.data.DateHelper
-import com.pt.mysociety.data.UserHelper
+import com.pt.mysociety.helpers.CurrencyHelper
+import com.pt.mysociety.helpers.DateHelper
+import com.pt.mysociety.helpers.UserHelper
 import com.pt.mysociety.databinding.FragmentSportDetailsBinding
 
 class SportDetailsFragment : Fragment() {

@@ -10,9 +10,9 @@ import android.widget.EditText
 import androidx.navigation.fragment.findNavController
 import com.pt.mysociety.dashboard.BaseFragment
 import com.pt.mysociety.dashboard.DashboardActivity
-import com.pt.mysociety.data.RandomHelper
-import com.pt.mysociety.data.SocietyHelper
-import com.pt.mysociety.data.UserHelper
+import com.pt.mysociety.helpers.RandomHelper
+import com.pt.mysociety.helpers.SocietyHelper
+import com.pt.mysociety.helpers.UserHelper
 import com.pt.mysociety.databinding.FragmentMemberDetailsBinding
 import com.pt.mysociety.login.model.User
 

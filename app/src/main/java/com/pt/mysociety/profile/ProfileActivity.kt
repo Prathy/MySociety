@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.pt.mysociety.BaseActivity
 import com.pt.mysociety.R
 import com.pt.mysociety.dashboard.DashboardActivity
-import com.pt.mysociety.data.SocietyHelper
-import com.pt.mysociety.data.UserHelper
+import com.pt.mysociety.helpers.SocietyHelper
+import com.pt.mysociety.helpers.UserHelper
 import com.pt.mysociety.databinding.ActivityProfileBinding
 import com.pt.mysociety.login.model.User
 

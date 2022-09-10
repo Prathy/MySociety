@@ -1,4 +1,4 @@
-package com.pt.mysociety.data
+package com.pt.mysociety.helpers
 
 class SocietyHelper {
 

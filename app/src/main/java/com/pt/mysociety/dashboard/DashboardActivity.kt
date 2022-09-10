@@ -16,7 +16,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.pt.mysociety.BaseActivity
 import com.pt.mysociety.R
-import com.pt.mysociety.data.UserHelper
+import com.pt.mysociety.helpers.UserHelper
 import com.pt.mysociety.databinding.ActivityDashboardBinding
 import com.pt.mysociety.login.LoginActivity
 

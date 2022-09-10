@@ -83,6 +83,7 @@ class SportEquipmentsFragment : Fragment(), FabClickListener {
                     }
                 }
 
+                llActions.removeAllViews()
                 it.equipmentCategories.forEach { key ->
                     val tvDynamic = TextView(requireContext())
                     tvDynamic.textSize = 18f

@@ -39,10 +39,21 @@
 
         <TextView
             android:id="@+id/tag"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
             android:layout_marginTop="10dp"
+            tools:text="@tools:sample/full_names"/>
+
+        <TextView
+            android:id="@+id/tag2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_alignParentEnd="true"
+            android:textAlignment="textEnd"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/tag"
             tools:text="@tools:sample/full_names"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
